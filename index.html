@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PINO-W · Software de gestión preventiva</title>
+<meta name="description" content="PINO-W reúne la gestión de seguridad y salud en el trabajo de una empresa en un solo programa: matriz, AST, procedimientos, inspecciones, capacitación y la Bandeja de la empresa, con cada rol viendo lo suyo.">
+<link rel="icon" href="img/icono.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --azul: #0f66d0; --azul-hondo: #12306a; --azul-claro: #e8f1fc; --celeste: #e3ecf7;
+    --tinta: #1c2a3f; --media: #4d5f78; --suave: #7b8ba1; --borde: #dbe4ef; --fondo: #f5f8fc;
+    --verde: #2f9e6f; --ambar: #e0a21b; --rojo: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--fondo); color: var(--tinta); font-family: "IBM Plex Sans", "Segoe UI", sans-serif; font-size: 17px; line-height: 1.6; }
+  h1, h2, h3 { margin: 0; font-family: "Archivo", "Segoe UI", sans-serif; color: var(--azul-hondo); letter-spacing: -0.015em; }
+  a { color: var(--azul); }
+  img { max-width: 100%; height: auto; display: block; }
+  .ancho { width: min(1180px, 100% - 2.5rem); margin: 0 auto; }
+
+  /* Cabecera */
+  .barra { position: sticky; top: 0; z-index: 20; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--borde); }
+  .barra .ancho { display: flex; align-items: center; gap: 1.5rem; height: 4.2rem; }
+  .marca { display: flex; flex-direction: column; line-height: 1; text-decoration: none; }
+  .marca b { font-family: "Archivo", sans-serif; font-size: 1.65rem; font-weight: 800; color: var(--azul); }
+  .marca b span { color: #7bb942; }
+  .marca small { margin-top: 0.15rem; font-size: 0.68rem; color: var(--media); }
+  .barra nav { display: flex; gap: 1.3rem; margin-left: auto; }
+  .barra nav a { font-size: 0.93rem; font-weight: 500; color: var(--media); text-decoration: none; }
+  .barra nav a:hover { color: var(--azul); }
+  .boton { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.8rem 1.35rem; border: 1px solid var(--azul); border-radius: 10px; background: var(--azul);
+    font: inherit; font-size: 0.98rem; font-weight: 600; color: #fff; text-decoration: none; cursor: pointer; }
+  .boton:hover { background: #0b56b4; }
+  .boton.claro { border-color: #b9cdf0; background: #fff; color: var(--azul); }
+  .boton.claro:hover { background: var(--azul-claro); }
+  .barra .boton { padding: 0.55rem 1rem; font-size: 0.9rem; }
+
+  /* Portada */
+  .portada { position: relative; overflow: hidden; background: #f7fbfe url("img/fondo.jpg") right center / cover no-repeat; }
+  .portada::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(247, 251, 254, 0.97) 0%, rgba(247, 251, 254, 0.9) 45%, rgba(247, 251, 254, 0.2) 100%); }
+  .portada .ancho { position: relative; padding: 5.5rem 0 4.5rem; }
+  .sobre { margin: 0 0 0.9rem; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--azul); }
+  .portada h1 { max-width: 15ch; font-size: clamp(2.3rem, 5vw, 3.6rem); line-height: 1.05; }
+  .portada p.bajada { max-width: 34rem; margin: 1.2rem 0 1.8rem; font-size: 1.15rem; color: var(--media); }
+  .acciones { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+  .dato { margin: 1rem 0 0; font-size: 0.86rem; color: var(--suave); }
+
+  /* Captura */
+  .captura { margin-top: -2.2rem; position: relative; z-index: 2; }
+  .captura img { border: 1px solid var(--borde); border-radius: 14px; box-shadow: 0 28px 60px rgba(14, 40, 80, 0.18); }
+
+  /* Secciones */
+  section.bloque { padding: 5rem 0 1rem; }
+  .titulo { max-width: 46rem; margin-bottom: 2.2rem; }
+  .titulo h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); line-height: 1.15; }
+  .titulo p { margin: 0.7rem 0 0; font-size: 1.05rem; color: var(--media); }
+  .rejilla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem; }
+  .tarjeta { padding: 1.4rem 1.4rem 1.3rem; border: 1px solid var(--borde); border-radius: 14px; background: #fff; }
+  .tarjeta h3 { font-size: 1.12rem; }
+  .tarjeta p { margin: 0.45rem 0 0; font-size: 0.95rem; color: var(--media); }
+  .tarjeta ul { margin: 0.7rem 0 0; padding: 0; list-style: none; }
+  .tarjeta li { position: relative; padding: 0.2rem 0 0.2rem 1.25rem; font-size: 0.93rem; color: var(--tinta); }
+  .tarjeta li::before { content: ""; position: absolute; left: 0.1rem; top: 0.72rem; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--azul); }
+  .icono { display: grid; place-items: center; width: 3rem; height: 3rem; margin-bottom: 0.9rem; border-radius: 12px; background: var(--celeste); color: var(--azul-hondo); }
+
+  .dos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 2.6rem; align-items: center; }
+  .dos.reves { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+  .dos img { border: 1px solid var(--borde); border-radius: 12px; box-shadow: 0 18px 40px rgba(14, 40, 80, 0.14); }
+  .lista-check { margin: 1.2rem 0 0; padding: 0; list-style: none; }
+  .lista-check li { position: relative; padding: 0.35rem 0 0.35rem 2rem; color: var(--tinta); }
+  .lista-check li::before { content: ""; position: absolute; left: 0; top: 0.55rem; width: 1.15rem; height: 1.15rem; border-radius: 50%; background: #e5f5ec; }
+  .lista-check li::after { content: ""; position: absolute; left: 0.38rem; top: 0.78rem; width: 0.38rem; height: 0.2rem; border-left: 2px solid var(--verde); border-bottom: 2px solid var(--verde); transform: rotate(-45deg); }
+
+  .roles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.8rem; }
+  .rol { padding: 1rem 1rem 0.9rem; border: 1px solid var(--borde); border-radius: 12px; background: #fff; }
+  .rol b { display: block; font-family: "Archivo", sans-serif; font-size: 0.98rem; color: var(--azul-hondo); }
+  .rol span { display: block; margin-top: 0.3rem; font-size: 0.85rem; line-height: 1.45; color: var(--media); }
+
+  .mineria { margin-top: 5rem; padding: 3rem 0; background: linear-gradient(120deg, #0d2b5c, #0f4f9e); color: #e9f1fc; }
+  .mineria h2 { color: #fff; }
+  .mineria .titulo p { color: #c9daf3; }
+  .mineria .tarjeta { border-color: rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.08); }
+  .mineria .tarjeta h3 { color: #fff; }
+  .mineria .tarjeta p { color: #c9daf3; }
+
+  .datos .tarjeta { border-left: 4px solid #b9cdf0; }
+
+  .descarga { margin: 5rem 0 0; padding: 3.5rem 0; background: #fff; border-top: 1px solid var(--borde); border-bottom: 1px solid var(--borde); }
+  .descarga .dos { align-items: start; }
+  .pasos { margin: 1rem 0 0; padding-left: 1.3rem; color: var(--tinta); }
+  .pasos li { margin: 0.4rem 0; }
+  .aviso { margin-top: 1.2rem; padding: 0.9rem 1.1rem; border-radius: 10px; background: #fdf3dc; font-size: 0.92rem; color: #5e4300; }
+  .caja-descarga { padding: 1.8rem; border: 1px solid var(--borde); border-radius: 16px; background: var(--fondo); }
+  .caja-descarga h3 { font-size: 1.35rem; }
+  .caja-descarga dl { display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 1.2rem; margin: 1.1rem 0 1.4rem; font-size: 0.93rem; }
+  .caja-descarga dt { color: var(--suave); }
+  .caja-descarga dd { margin: 0; color: var(--tinta); }
+
+  footer { padding: 2.5rem 0 3rem; font-size: 0.9rem; color: var(--media); }
+  footer .ancho { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+
+  @media (max-width: 960px) {
+    .barra nav { display: none; }
+    .barra .boton { margin-left: auto; }
+    .rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .roles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dos, .dos.reves { grid-template-columns: minmax(0, 1fr); }
+    .portada::before { background: rgba(247, 251, 254, 0.9); }
+  }
+  @media (max-width: 600px) {
+    body { font-size: 16px; }
+    .ancho { width: calc(100% - 2rem); }
+    .rejilla { grid-template-columns: minmax(0, 1fr); }
+    .portada .ancho { padding: 3.5rem 0 3.5rem; }
+    .captura { margin-top: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <div class="ancho">
+    <a class="marca" href="#"><b>PINO<span>-W</span></b><small>Software de gestión preventiva</small></a>
+    <nav aria-label="Secciones">
+      <a href="#que-hace">Qué hace</a>
+      <a href="#bandeja">Bandeja</a>
+      <a href="#roles">Roles</a>
+      <a href="#mineria">Minería</a>
+      <a href="#datos">Tus datos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a class="boton" href="#descargar">Descargar</a>
+  </div>
+</header>
+
+<section class="portada">
+  <div class="ancho">
+    <p class="sobre">Gestión preventiva en terreno</p>
+    <h1>La prevención de tu empresa, en un solo lugar</h1>
+    <p class="bajada">
+      Matriz de riesgos, AST, procedimientos, inspecciones, EPP, capacitaciones y la Bandeja de la empresa:
+      lo que hoy vive repartido entre planillas, fotos del celular y el cuaderno de terreno, con trazabilidad desde el hallazgo hasta su cierre.
+    </p>
+    <div class="acciones">
+      <a class="boton" href="#descargar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5"/><path d="M4.5 16v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>
+        Descargar para Windows
+      </a>
+      <a class="boton claro" href="#que-hace">Ver qué incluye</a>
+    </div>
+    <p class="dato">Versión 0.19 · Windows 10 y 11 de 64 bits · 49 MB</p>
+  </div>
+</section>
+
+<div class="ancho captura">
+  <img src="img/bandeja.jpg" alt="La Bandeja de entrada de PINO-W: carpetas a la izquierda, la lista de solicitudes al centro y el detalle de un procedimiento por aprobar a la derecha" width="1600" height="900">
+</div>
+
+<section class="bloque" id="que-hace">
+  <div class="ancho">
+    <div class="titulo">
+      <h2>Todo el ciclo preventivo, de la matriz a la mejora</h2>
+      <p>Las mismas herramientas que usa un prevencionista en terreno, ordenadas como trabaja: identificar y evaluar, controlar, capacitar, investigar y mejorar.</p>
+    </div>
+    <div class="rejilla">
+      <article class="tarjeta">
+        <span class="icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4.5 4.5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-15.5a1 1 0 0 1 1-1z"/><path d="M14 3.5V8h4.5M9 13h6M9 16.5h6"/></svg></span>
+        <h3>Documentos</h3>
+        <ul><li>AST y permisos de trabajo</li><li>IPER en terreno y la MIPER en Excel</li><li>Procedimientos (PTS) que se arman desde la matriz</li><li>Reglamento Interno, Política de SST y mapas de riesgos</li><li>Gestión documental con versiones y vencimientos</li></ul>
+      </article>
+      <article class="tarjeta">
+        <span class="icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4.5" width="14" height="16" rx="2"/><path d="M9 4.5V3.2h6v1.3M9 12.5l2 2 4-4.2"/></svg></span>
+        <h3>Trabajo en terreno</h3>
+        <ul><li>Inspecciones con hallazgos, responsable y plazo</li><li>Checklists de equipos, también mineros</li><li>Gestión de EPP: entregas firmadas y reposición</li><li>Control de visitas: quién está dentro de la faena</li></ul>
+      </article>
+      <article class="tarjeta">
+        <span class="icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-4.5L21 9l-9 4.5z"/><path d="M7 11v4.5c1.5 1.5 3 2 5 2s3.5-.5 5-2V11"/></svg></span>
+        <h3>Capacitación</h3>
+        <ul><li>Obligación de informar (ODI)</li><li>Charlas con asistencia</li><li>Programa de capacitaciones y su registro</li></ul>
+      </article>
+      <article class="tarjeta">
+        <span class="icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.4h.01"/></svg></span>
+        <h3>Accidentes y emergencias</h3>
+        <ul><li>Aviso de accidente y de riesgo grave</li><li>Análisis de causas e informes</li><li>Plan de emergencia y simulacros</li></ul>
+      </article>
+      <article class="tarjeta">
+        <span class="icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5v17M5 7.5h14M7 7.5l-3 6a3.5 3.5 0 0 0 6 0zM17 7.5l-3 6a3.5 3.5 0 0 0 6 0z"/></svg></span>
+        <h3>Cumplimiento legal</h3>
+        <ul><li>Comité Paritario, fiscalizaciones y auditorías</li><li>Contratistas y sus documentos</li><li>Sustancias peligrosas y protocolos MINSAL</li><li>Ley Karin, con reserva</li></ul>
+      </article>
+      <article class="tarjeta">
+        <span class="icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5h16"/><path d="M6.5 16V11M11 16V7M15.5 16v-6M20 16V5"/></svg></span>
+        <h3>Gestión del sistema</h3>
+        <ul><li>Diagnóstico y programa de trabajo</li><li>Carta Gantt e indicadores</li><li>Mejora continua y lecciones aprendidas</li><li>Informes en PDF con el logo de tu empresa</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="bloque" id="bandeja">
+  <div class="ancho dos">
+    <div>
+      <div class="titulo">
+        <h2>La Bandeja: lo que tiene que llegar, llega</h2>
+        <p>Cada solicitud va a quien corresponde y queda con su firma y su fecha. Además puedes mandar cualquier documento a la persona que elijas.</p>
+      </div>
+      <ul class="lista-check">
+        <li>Avisos urgentes de accidentes y riesgo grave, al instante</li>
+        <li>Documentos para aprobar, firmar o recibir, con su constancia</li>
+        <li>«Enviar a la bandeja de…» desde cualquier documento, a quien elijas por nombre y rol</li>
+        <li>Solicitudes con varios archivos hechos en PINO-W, ordenados por fecha</li>
+        <li>Cada constancia con un código para verificar que nada cambió</li>
+      </ul>
+    </div>
+    <img src="img/enviar.jpg" alt="Ventana para enviar un AST a la bandeja de una persona de la empresa, eligiéndola por nombre y rol" width="1600" height="900" loading="lazy">
+  </div>
+</section>
+
+<section class="bloque" id="roles">
+  <div class="ancho">
+    <div class="titulo">
+      <h2>Cada persona ve lo suyo</h2>
+      <p>La empresa entra con un código y los administradores le dan a cada persona su rol. Con ese rol, cada uno ve sus herramientas y nada más.</p>
+    </div>
+    <div class="roles">
+      <div class="rol"><b>Administradores</b><span>Dirigen la empresa: dan los roles, crean los proyectos y reciben lo que la ley les manda.</span></div>
+      <div class="rol"><b>Jefe de prevención</b><span>Lleva el sistema completo y difunde la matriz, los mapas y los procedimientos.</span></div>
+      <div class="rol"><b>Prevencionista</b><span>Asesora y usa todas las herramientas del sistema.</span></div>
+      <div class="rol"><b>Jefe de área</b><span>Aprueba los procedimientos de su área y controla en terreno.</span></div>
+      <div class="rol"><b>Jefe de turno</b><span>Entrega y recibe el turno, con su libro de novedades.</span></div>
+      <div class="rol"><b>Supervisor</b><span>Manda el AST a su cuadrilla, da la charla, inspecciona y autoriza permisos.</span></div>
+      <div class="rol"><b>Comité Paritario</b><span>Inspecciona, investiga y manda sus acuerdos a la empresa.</span></div>
+      <div class="rol"><b>Brigadista</b><span>Conoce el plan de emergencia y sabe quién está dentro de la faena.</span></div>
+      <div class="rol"><b>Operador</b><span>Revisa su equipo antes de usarlo y ve su autorización vigente.</span></div>
+      <div class="rol"><b>Trabajador</b><span>Ve su jornada, rellena su AST y firma desde su cuenta lo que recibe.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="mineria" id="mineria">
+  <div class="ancho">
+    <div class="titulo">
+      <h2>Pensado también para la faena minera</h2>
+      <p>Las herramientas consideran lo que pide el reglamento de seguridad minera (DS 132) y lo que se informa a Sernageomin.</p>
+    </div>
+    <div class="rejilla">
+      <article class="tarjeta"><h3>Equipos mineros</h3><p>Checklists de CAEX, cargadores y LHD, perforadoras y frentes de carguío, con el aviso a la supervisión cuando algo falla.</p></article>
+      <article class="tarjeta"><h3>Tronadura y tiros quedados</h3><p>Control de tronadura con su retorno firmado y registro de tiros quedados hasta su eliminación.</p></article>
+      <article class="tarjeta"><h3>Controles críticos</h3><p>Verificaciones en terreno: si un control falla, el trabajo se detiene y queda registrado.</p></article>
+      <article class="tarjeta"><h3>Permisos y bloqueos</h3><p>Espacio confinado, trabajo en caliente, altura y eléctrico, y bloqueos con vuelta a operar firmada.</p></article>
+      <article class="tarjeta"><h3>Estadística e informes</h3><p>La estadística mensual y el informe técnico de accidentes graves, firmados al enviarlos.</p></article>
+      <article class="tarjeta"><h3>Contratistas</h3><p>La mandante ve a sus contratistas por área y recibe sus documentos, accidentes y estadística.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="bloque datos" id="datos">
+  <div class="ancho">
+    <div class="titulo">
+      <h2>Tus datos, cuidados</h2>
+      <p>PINO-W se diseñó para que cada dato esté solo donde tiene que estar.</p>
+    </div>
+    <div class="rejilla">
+      <article class="tarjeta"><h3>Lo de tus módulos, en tu computador</h3><p>La matriz, las inspecciones y los demás registros se guardan en tu equipo. Nada sube solo: sube lo que tú envías.</p></article>
+      <article class="tarjeta"><h3>Datos de salud, al mínimo</h3><p>De los exámenes se guarda solo la vigencia, nunca el resultado. Los avisos de dolencias los ve solo prevención.</p></article>
+      <article class="tarjeta"><h3>Ley Karin, con reserva</h3><p>Una denuncia la ven solo quien la hace y quienes deben atenderla. No se reenvía ni se manda con copia.</p></article>
+      <article class="tarjeta"><h3>Firmas con constancia</h3><p>Quien firma escribe su clave: queda su RUT, la hora, una huella del documento y un código para verificarlo.</p></article>
+      <article class="tarjeta"><h3>Correos sin contenido</h3><p>Los avisos por correo solo dicen que hay algo nuevo. El detalle se ve dentro del programa.</p></article>
+      <article class="tarjeta"><h3>Cada rol, lo suyo</h3><p>Cada persona ve solo lo que le corresponde a su rol, y lo que se manda de persona a persona lo ven solo ellas.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="descarga" id="descargar">
+  <div class="ancho dos">
+    <div>
+      <div class="titulo">
+        <h2>Descarga PINO-W</h2>
+        <p>Es gratis descargarlo. Para entrar necesitas una cuenta e internet.</p>
+      </div>
+      <ol class="pasos">
+        <li><b>Descomprime el archivo completo:</b> clic derecho sobre él y «Extraer todo». No lo abras desde dentro del ZIP.</li>
+        <li>Entra a la carpeta <b>PINO-W</b>, después a <b>programa</b>, y haz doble clic en <b>PINO-W</b>.</li>
+        <li>Crea tu cuenta con <b>Registrarse</b> y entra. Si tu empresa ya usa PINO-W, pídele el código a sus administradores.</li>
+      </ol>
+      <p class="aviso">La primera vez puede aparecer «Windows protegió su PC», porque el programa todavía no tiene firma digital. Haz clic en <b>Más información</b> y luego en <b>Ejecutar de todas formas</b>.</p>
+    </div>
+    <div class="caja-descarga">
+      <h3>PINO-W para Windows</h3>
+      <dl>
+        <dt>Versión</dt><dd>0.19 · noviembre de 2026</dd>
+        <dt>Sistema</dt><dd>Windows 10 y 11 de 64 bits</dd>
+        <dt>Peso</dt><dd>49 MB (comprimido)</dd>
+        <dt>Necesita</dt><dd>Internet para entrar y para la Bandeja</dd>
+      </dl>
+      <a class="boton" href="https://github.com/yuumiuwu258852-stack/pino-w/releases/latest/download/PINO-W.zip" download>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5"/><path d="M4.5 16v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>
+        Descargar PINO-W.zip
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="bloque" id="contacto">
+  <div class="ancho dos reves">
+    <img src="img/iper.jpg" alt="Pantalla de levantamientos IPER con filtros por riesgo y por proceso" width="1600" height="900" loading="lazy">
+    <div class="titulo">
+      <h2>¿Lo quieres para tu empresa?</h2>
+      <p>Escríbenos y te ayudamos a ponerlo en marcha con tu equipo: la empresa, los roles, los proyectos y la matriz.</p>
+      <p><a class="boton claro" href="mailto:pinow.contacto@gmail.com">pinow.contacto@gmail.com</a></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ancho">
+    <span>© 2026 PINO-W · Software de gestión preventiva para empresas</span>
+    <span>Las capturas usan datos de ejemplo.</span>
+  </div>
+</footer>
+
+</body>
+</html>
