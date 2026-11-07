@@ -101,12 +101,23 @@
   .caja-descarga dt { color: var(--suave); }
   .caja-descarga dd { margin: 0; color: var(--tinta); }
 
+  /* Cada sección se ve sola, al apretarla en el menú de arriba (07-11-2026, pedido de Karen) */
+  [data-pagina][hidden] { display: none !important; }
+  main { min-height: calc(100vh - 4.2rem - 7rem); }
+  main > section.bloque { padding-bottom: 4rem; }
+  .mineria, .descarga { margin: 0 !important; padding: 4.5rem 0 !important; }
+  .barra nav a[aria-current="page"] { color: var(--azul-hondo); font-weight: 700; box-shadow: inset 0 -3px 0 var(--azul); }
+  .barra nav a { padding: 1.35rem 0 1.25rem; }
+
   footer { padding: 2.5rem 0 3rem; font-size: 0.9rem; color: var(--media); }
   footer .ancho { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
 
   @media (max-width: 960px) {
-    .barra nav { display: none; }
+    .barra .ancho { flex-wrap: wrap; height: auto; padding-top: 0.6rem; gap: 0.4rem 1rem; }
     .barra .boton { margin-left: auto; }
+    .barra nav { order: 3; width: 100%; margin: 0; overflow-x: auto; gap: 1.1rem; scrollbar-width: none; }
+    .barra nav::-webkit-scrollbar { display: none; }
+    .barra nav a { flex: none; padding: 0.55rem 0 0.7rem; }
     .rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .roles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .dos, .dos.reves { grid-template-columns: minmax(0, 1fr); }
@@ -125,19 +136,23 @@
 
 <header class="barra">
   <div class="ancho">
-    <a class="marca" href="#"><b>PINO<span>-W</span></b><small>Software de gestión preventiva</small></a>
+    <a class="marca" href="#inicio"><b>PINO<span>-W</span></b><small>Software de gestión preventiva</small></a>
     <nav aria-label="Secciones">
+      <a href="#inicio">Inicio</a>
       <a href="#que-hace">Qué hace</a>
       <a href="#bandeja">Bandeja</a>
       <a href="#roles">Roles</a>
       <a href="#mineria">Minería</a>
       <a href="#datos">Tus datos</a>
+      <a href="#descargar">Descargar</a>
       <a href="#contacto">Contacto</a>
     </nav>
     <a class="boton" href="#descargar">Descargar</a>
   </div>
 </header>
 
+<main>
+<div data-pagina="inicio">
 <section class="portada">
   <div class="ancho">
     <p class="sobre">Gestión preventiva en terreno</p>
@@ -153,15 +168,16 @@
       </a>
       <a class="boton claro" href="#que-hace">Ver qué incluye</a>
     </div>
-    <p class="dato">Versión 0.19 · Windows 10 y 11 de 64 bits · 49 MB</p>
+    <p class="dato">Versión 0.20 · Windows 10 y 11 de 64 bits · 49 MB</p>
   </div>
 </section>
 
 <div class="ancho captura">
   <img src="img/bandeja.jpg" alt="La Bandeja de entrada de PINO-W: carpetas a la izquierda, la lista de solicitudes al centro y el detalle de un procedimiento por aprobar a la derecha" width="1600" height="900">
 </div>
+</div>
 
-<section class="bloque" id="que-hace">
+<section class="bloque" id="que-hace" data-pagina="que-hace">
   <div class="ancho">
     <div class="titulo">
       <h2>Todo el ciclo preventivo, de la matriz a la mejora</h2>
@@ -202,7 +218,7 @@
   </div>
 </section>
 
-<section class="bloque" id="bandeja">
+<section class="bloque" id="bandeja" data-pagina="bandeja">
   <div class="ancho dos">
     <div>
       <div class="titulo">
@@ -221,7 +237,7 @@
   </div>
 </section>
 
-<section class="bloque" id="roles">
+<section class="bloque" id="roles" data-pagina="roles">
   <div class="ancho">
     <div class="titulo">
       <h2>Cada persona ve lo suyo</h2>
@@ -242,7 +258,7 @@
   </div>
 </section>
 
-<section class="mineria" id="mineria">
+<section class="mineria" id="mineria" data-pagina="mineria">
   <div class="ancho">
     <div class="titulo">
       <h2>Pensado también para la faena minera</h2>
@@ -259,7 +275,7 @@
   </div>
 </section>
 
-<section class="bloque datos" id="datos">
+<section class="bloque datos" id="datos" data-pagina="datos">
   <div class="ancho">
     <div class="titulo">
       <h2>Tus datos, cuidados</h2>
@@ -276,7 +292,7 @@
   </div>
 </section>
 
-<section class="descarga" id="descargar">
+<section class="descarga" id="descargar" data-pagina="descargar">
   <div class="ancho dos">
     <div>
       <div class="titulo">
@@ -293,7 +309,7 @@
     <div class="caja-descarga">
       <h3>PINO-W para Windows</h3>
       <dl>
-        <dt>Versión</dt><dd>0.19 · noviembre de 2026</dd>
+        <dt>Versión</dt><dd>0.20 · noviembre de 2026</dd>
         <dt>Sistema</dt><dd>Windows 10 y 11 de 64 bits</dd>
         <dt>Peso</dt><dd>49 MB (comprimido)</dd>
         <dt>Necesita</dt><dd>Internet para entrar y para la Bandeja</dd>
@@ -306,7 +322,7 @@
   </div>
 </section>
 
-<section class="bloque" id="contacto">
+<section class="bloque" id="contacto" data-pagina="contacto">
   <div class="ancho dos reves">
     <img src="img/iper.jpg" alt="Pantalla de levantamientos IPER con filtros por riesgo y por proceso" width="1600" height="900" loading="lazy">
     <div class="titulo">
@@ -317,6 +333,8 @@
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="ancho">
     <span>© 2026 PINO-W · Software de gestión preventiva para empresas</span>
@@ -324,5 +342,25 @@
   </div>
 </footer>
 
+<script>
+  /* Se ve solo la sección elegida arriba; el enlace (#roles, #descargar…) se puede compartir */
+  (function () {
+    var paginas = Array.prototype.slice.call(document.querySelectorAll("[data-pagina]"));
+    var enlaces = Array.prototype.slice.call(document.querySelectorAll(".barra nav a"));
+    function mostrar() {
+      var id = (location.hash || "#inicio").slice(1);
+      if (!paginas.some(function (p) { return p.dataset.pagina === id; })) { id = "inicio"; }
+      paginas.forEach(function (p) { p.hidden = p.dataset.pagina !== id; });
+      enlaces.forEach(function (a) {
+        if (a.getAttribute("href") === "#" + id) { a.setAttribute("aria-current", "page"); } else { a.removeAttribute("aria-current"); }
+      });
+      // Después del salto que hace el navegador al enlace: cada sección parte desde arriba
+      setTimeout(function () { window.scrollTo(0, 0); }, 0);
+    }
+    window.addEventListener("hashchange", mostrar);
+    window.addEventListener("load", mostrar);
+    mostrar();
+  })();
+</script>
 </body>
 </html>
