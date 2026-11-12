@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutoriales · PINO-W</title>
+<meta name="description" content="Manuales de uso de PINO-W para las empresas clientes: cada persona entra con su cuenta y ve el manual de su rol.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../img/icono.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  /* Tutoriales de PINO-W (11-11-2026). Los manuales viven en el servidor y se piden con la
+     sesión de la cuenta: esta página no tiene contenido propio. La clave nunca se guarda;
+     la credencial queda solo en esta pestaña (sessionStorage) y «Salir» la borra. */
+  :root {
+    --azul: #0f66d0; --azul-hondo: #12306a; --azul-claro: #e8f1fc; --celeste: #e3ecf7;
+    --tinta: #1c2a3f; --media: #4d5f78; --suave: #7b8ba1; --borde: #dbe4ef; --fondo: #f5f8fc;
+    --verde: #2f9e6f; --ambar: #e0a21b; --rojo: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--fondo); color: var(--tinta); font-family: "IBM Plex Sans", "Segoe UI", sans-serif; font-size: 17px; line-height: 1.6; }
+  h1, h2, h3 { margin: 0; font-family: "Archivo", "Segoe UI", sans-serif; color: var(--azul-hondo); letter-spacing: -0.015em; }
+  a { color: var(--azul); }
+  img { max-width: 100%; height: auto; display: block; }
+  button { font: inherit; }
+  .ancho { width: min(1180px, 100% - 2.5rem); margin: 0 auto; }
+  [hidden] { display: none !important; }
+
+  .boton { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.3rem; border: 1px solid var(--azul); border-radius: 10px;
+    background: var(--azul); font-size: 0.98rem; font-weight: 600; color: #fff; text-decoration: none; cursor: pointer; }
+  .boton:hover { background: #0b56b4; }
+  .boton:disabled { opacity: 0.6; cursor: wait; }
+  .boton.claro { border-color: #b9cdf0; background: #fff; color: var(--azul); }
+  .boton.claro:hover { background: var(--azul-claro); }
+  .boton.chico { padding: 0.45rem 0.9rem; font-size: 0.88rem; }
+
+  /* Cabecera */
+  .barra { position: sticky; top: 0; z-index: 20; background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--borde); }
+  .barra .ancho { display: flex; align-items: center; gap: 1rem; height: 4.2rem; }
+  .marca { display: flex; flex-direction: column; line-height: 1; text-decoration: none; }
+  .marca b { font-family: "Archivo", sans-serif; font-size: 1.65rem; font-weight: 800; color: var(--azul); }
+  .marca b span { color: #7bb942; }
+  .marca small { margin-top: 0.15rem; font-size: 0.68rem; color: var(--media); }
+  .barra .seccion { padding-left: 1rem; border-left: 1px solid var(--borde); font-family: "Archivo", sans-serif; font-weight: 700; color: var(--azul-hondo); }
+  .barra .derecha { margin-left: auto; display: flex; align-items: center; gap: 0.8rem; }
+  .barra .quien { font-size: 0.9rem; color: var(--media); }
+  .volver { font-size: 0.92rem; color: var(--media); text-decoration: none; }
+  .volver:hover { color: var(--azul); }
+
+  /* Entrada */
+  .entrada { min-height: calc(100vh - 4.2rem); display: grid; place-items: center; padding: 3rem 0;
+    background: #f7fbfe url("../img/fondo.jpg") right center / cover no-repeat; position: relative; }
+  .entrada::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(247, 251, 254, 0.97) 0%, rgba(247, 251, 254, 0.92) 50%, rgba(247, 251, 254, 0.55) 100%); }
+  .entrada .ancho { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: 3rem; align-items: center; }
+  .sobre { margin: 0 0 0.8rem; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--azul); }
+  .entrada h1 { font-size: clamp(2.1rem, 4.5vw, 3.2rem); line-height: 1.06; max-width: 14ch; }
+  .entrada p.bajada { max-width: 32rem; margin: 1rem 0 0; font-size: 1.1rem; color: var(--media); }
+  .puntos { margin: 1.4rem 0 0; padding: 0; list-style: none; }
+  .puntos li { position: relative; padding: 0.3rem 0 0.3rem 2rem; }
+  .puntos li::before { content: ""; position: absolute; left: 0; top: 0.55rem; width: 1.15rem; height: 1.15rem; border-radius: 50%; background: #e5f5ec; }
+  .puntos li::after { content: ""; position: absolute; left: 0.38rem; top: 0.78rem; width: 0.38rem; height: 0.2rem; border-left: 2px solid var(--verde); border-bottom: 2px solid var(--verde); transform: rotate(-45deg); }
+  .caja { padding: 1.8rem; border: 1px solid var(--borde); border-radius: 16px; background: #fff; box-shadow: 0 24px 50px rgba(14, 40, 80, 0.14); }
+  .caja h2 { font-size: 1.4rem; }
+  .caja p.nota { margin: 0.4rem 0 1.2rem; font-size: 0.92rem; color: var(--media); }
+  .campo { display: block; margin-bottom: 1rem; }
+  .campo span { display: block; margin-bottom: 0.3rem; font-size: 0.88rem; font-weight: 600; color: var(--tinta); }
+  .campo input { width: 100%; padding: 0.75rem 0.9rem; border: 1px solid var(--borde); border-radius: 10px; font: inherit; font-size: 1rem; background: var(--fondo); color: var(--tinta); }
+  .campo input:focus { outline: 2px solid var(--azul); outline-offset: 1px; background: #fff; }
+  .caja .boton { width: 100%; margin-top: 0.3rem; }
+  .estado { margin: 1rem 0 0; padding: 0.75rem 0.9rem; border-radius: 10px; font-size: 0.92rem; }
+  .estado.info { background: var(--azul-claro); color: var(--azul-hondo); }
+  .estado.error { background: #fbe9e7; color: #8a1f17; }
+  .letra-chica { margin: 1rem 0 0; font-size: 0.82rem; color: var(--suave); }
+
+  /* Mis manuales */
+  .portada-manuales { padding: 3rem 0 1rem; }
+  .portada-manuales h1 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); }
+  .portada-manuales p { margin: 0.5rem 0 0; color: var(--media); }
+  .lista-manuales { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 1rem; padding: 1.5rem 0 4rem; }
+  .tarjeta-manual { display: flex; flex-direction: column; gap: 0.5rem; padding: 1.5rem; border: 1px solid var(--borde); border-radius: 16px; background: #fff; text-align: left; cursor: pointer; color: inherit; }
+  .tarjeta-manual:hover { border-color: #b9cdf0; box-shadow: 0 12px 30px rgba(14, 40, 80, 0.1); }
+  .tarjeta-manual .rol { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--azul); }
+  .tarjeta-manual h2 { font-size: 1.25rem; }
+  .tarjeta-manual p { margin: 0; font-size: 0.93rem; color: var(--media); }
+  .tarjeta-manual .pie { margin-top: auto; padding-top: 0.6rem; font-size: 0.88rem; font-weight: 600; color: var(--azul); }
+  .tarjeta-manual.pronto { cursor: default; background: var(--fondo); }
+  .tarjeta-manual.pronto .pie { color: var(--suave); }
+  .vacio { margin: 2rem 0 4rem; padding: 2rem; border: 1px dashed #b9cdf0; border-radius: 16px; background: #fff; max-width: 42rem; }
+  .vacio h2 { font-size: 1.3rem; }
+  .vacio p { margin: 0.5rem 0 0; color: var(--media); }
+
+  /* El manual */
+  .manual-cabeza { padding: 2.8rem 0 2.2rem; background: linear-gradient(120deg, #0d2b5c, #0f4f9e); color: #e9f1fc; }
+  .manual-cabeza .sobre { color: #9cc3f5; }
+  .manual-cabeza h1 { color: #fff; font-size: clamp(2rem, 4vw, 2.9rem); line-height: 1.08; }
+  .manual-cabeza p { max-width: 44rem; margin: 0.8rem 0 0; font-size: 1.1rem; color: #c9daf3; }
+  .manual-cabeza .acciones { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.4rem; }
+  .manual-cabeza .boton.claro { border-color: rgba(255, 255, 255, 0.35); background: rgba(255, 255, 255, 0.1); color: #fff; }
+  .manual-cabeza .boton.claro:hover { background: rgba(255, 255, 255, 0.18); }
+  .manual-cabeza .version { margin-top: 1rem; font-size: 0.85rem; color: #9cc3f5; }
+
+  .manual-cuerpo { display: grid; grid-template-columns: 15.5rem minmax(0, 1fr); gap: 2.5rem; padding: 2.5rem 0 5rem; }
+  .indice { position: sticky; top: 5.4rem; align-self: start; max-height: calc(100vh - 6.5rem); overflow: auto; padding: 1.1rem; border: 1px solid var(--borde); border-radius: 14px; background: #fff; }
+  .indice b { display: block; margin-bottom: 0.5rem; font-family: "Archivo", sans-serif; font-size: 0.92rem; color: var(--azul-hondo); }
+  .indice ol { margin: 0; padding: 0; list-style: none; counter-reset: i; }
+  .indice li a { display: block; padding: 0.32rem 0.5rem; border-radius: 8px; font-size: 0.88rem; line-height: 1.35; color: var(--media); text-decoration: none; }
+  .indice li a:hover { background: var(--azul-claro); color: var(--azul-hondo); }
+  .indice li a.activo { background: var(--azul-claro); color: var(--azul-hondo); font-weight: 600; }
+  .indice .grupo { margin: 0.8rem 0 0.3rem 0.5rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--suave); }
+
+  .bloque { scroll-margin-top: 5.6rem; margin-bottom: 3rem; }
+  .bloque > h2 { font-size: clamp(1.5rem, 2.6vw, 1.9rem); line-height: 1.15; }
+  .bloque > p.intro { margin: 0.5rem 0 1.4rem; color: var(--media); max-width: 46rem; }
+
+  .dos-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .panel { padding: 1.4rem; border: 1px solid var(--borde); border-radius: 14px; background: #fff; }
+  .panel h3 { font-size: 1.05rem; margin-bottom: 0.4rem; }
+  .panel ul { margin: 0; padding: 0; list-style: none; }
+  .panel li { position: relative; padding: 0.3rem 0 0.3rem 1.6rem; font-size: 0.96rem; }
+  .panel.si li::before { content: "✓"; position: absolute; left: 0.1rem; top: 0.28rem; color: var(--verde); font-weight: 700; }
+  .panel.no li::before { content: "—"; position: absolute; left: 0.1rem; top: 0.28rem; color: var(--suave); font-weight: 700; }
+  .quien-es { margin: 0 0 1rem; padding: 1rem 1.2rem; border-left: 4px solid var(--azul); border-radius: 0 12px 12px 0; background: var(--azul-claro); color: var(--azul-hondo); }
+
+  /* Flujos */
+  .flujo { margin-bottom: 1.2rem; padding: 1.3rem 1.4rem; border: 1px solid var(--borde); border-radius: 14px; background: #fff; }
+  .flujo h3 { font-size: 1.08rem; margin-bottom: 1rem; }
+  .cadena { display: flex; align-items: stretch; gap: 0; margin: 0; padding: 0; list-style: none; overflow-x: auto; padding-bottom: 0.2rem; }
+  .eslabon { position: relative; flex: 1 1 0; min-width: 11.5rem; padding: 0.9rem 1rem 1rem; border: 1px solid var(--borde); border-radius: 12px; background: var(--fondo); }
+  .eslabon + .eslabon { margin-left: 2rem; }
+  .eslabon + .eslabon::before { content: ""; position: absolute; left: -1.55rem; top: 50%; width: 1.1rem; height: 2px; background: #9db5d6; }
+  .eslabon + .eslabon::after { content: ""; position: absolute; left: -0.62rem; top: calc(50% - 5px); border: 6px solid transparent; border-left-color: #9db5d6; border-right: 0; }
+  .eslabon .num { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; margin-right: 0.35rem; border-radius: 50%; background: #fff; border: 1px solid var(--borde); font-size: 0.78rem; font-weight: 700; color: var(--media); }
+  .chip { display: inline-block; padding: 0.12rem 0.55rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
+  .chip.yo { background: var(--azul); color: #fff; }
+  .chip.otro { background: #fff; border: 1px solid #b9cdf0; color: var(--azul-hondo); }
+  .chip.sistema { background: #e5f5ec; color: #1d6b49; }
+  .eslabon p { margin: 0.55rem 0 0; font-size: 0.92rem; line-height: 1.45; }
+  .flujo .ley { margin: 0.8rem 0 0; font-size: 0.82rem; color: var(--suave); }
+
+  /* Herramientas */
+  .herramienta { scroll-margin-top: 5.6rem; margin-bottom: 2rem; padding: 1.8rem; border: 1px solid var(--borde); border-radius: 18px; background: #fff; }
+  .herramienta .cab { display: flex; align-items: flex-start; gap: 1rem; }
+  .herramienta .n { flex: none; display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 12px; background: var(--celeste); font-family: "Archivo", sans-serif; font-weight: 800; color: var(--azul-hondo); }
+  .herramienta h3 { font-size: 1.35rem; line-height: 1.2; }
+  .donde { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.45rem; padding: 0.2rem 0.65rem; border-radius: 8px; background: var(--fondo); border: 1px solid var(--borde); font-size: 0.84rem; color: var(--media); }
+  .herramienta .para { margin: 1rem 0 0; color: var(--tinta); }
+  .paso { margin-top: 1.4rem; }
+  .paso .texto { display: flex; gap: 0.7rem; align-items: baseline; }
+  .paso .texto b { flex: none; font-family: "Archivo", sans-serif; color: var(--azul); }
+  .paso .texto p { margin: 0; }
+  .figura { margin: 1rem 0 0; }
+  .figura button { display: block; width: 100%; padding: 0; border: 1px solid var(--borde); border-radius: 12px; background: var(--fondo); overflow: hidden; cursor: zoom-in; box-shadow: 0 14px 34px rgba(14, 40, 80, 0.12); }
+  .figura img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; background: var(--celeste); }
+  .figura figcaption { margin-top: 0.5rem; font-size: 0.82rem; color: var(--suave); }
+  .marcas { margin: 1rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.55rem; }
+  .marcas li { display: flex; gap: 0.75rem; align-items: flex-start; font-size: 0.96rem; }
+  .marcas .bola { flex: none; display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--ambar); color: #fff; font-weight: 700; font-size: 0.88rem; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); }
+  .consejos { margin-top: 1.4rem; padding: 1rem 1.2rem; border-radius: 12px; background: #fff7e3; border: 1px solid #f3dfa8; }
+  .consejos b { display: block; margin-bottom: 0.3rem; color: #6b4b00; }
+  .consejos ul { margin: 0; padding-left: 1.2rem; color: #5e4300; font-size: 0.94rem; }
+  .consejos li { margin: 0.2rem 0; }
+
+  /* Preguntas */
+  details { margin-bottom: 0.7rem; border: 1px solid var(--borde); border-radius: 12px; background: #fff; }
+  summary { padding: 1rem 1.2rem; font-weight: 600; cursor: pointer; color: var(--azul-hondo); }
+  details p { margin: 0; padding: 0 1.2rem 1.1rem; color: var(--media); }
+
+  /* Zoom de la captura */
+  .zoom { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 1.5rem; background: rgba(13, 30, 60, 0.82); cursor: zoom-out; }
+  .zoom img { max-width: min(1600px, 100%); max-height: 100%; border-radius: 10px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4); }
+
+  .cargando { padding: 4rem 0; text-align: center; color: var(--media); }
+  footer { padding: 2rem 0 3rem; border-top: 1px solid var(--borde); font-size: 0.88rem; color: var(--media); }
+  footer .ancho { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+
+  @media (max-width: 960px) {
+    .entrada .ancho { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+    .entrada::before { background: rgba(247, 251, 254, 0.93); }
+    .manual-cuerpo { grid-template-columns: minmax(0, 1fr); }
+    .indice { position: static; max-height: none; }
+    .dos-col { grid-template-columns: minmax(0, 1fr); }
+    .cadena { flex-direction: column; }
+    .eslabon { min-width: 0; }
+    .eslabon + .eslabon { margin-left: 0; margin-top: 1.6rem; }
+    .eslabon + .eslabon::before { left: 50%; top: -1.25rem; width: 2px; height: 0.9rem; }
+    .eslabon + .eslabon::after { left: calc(50% - 5px); top: -0.5rem; border: 6px solid transparent; border-top-color: #9db5d6; border-bottom: 0; }
+  }
+  @media (max-width: 600px) {
+    body { font-size: 16px; }
+    .ancho { width: calc(100% - 2rem); }
+    .barra .seccion, .barra .quien, .volver { display: none; }
+    .herramienta { padding: 1.2rem; }
+  }
+  @media print {
+    .barra, .indice, .manual-cabeza .acciones, footer, .zoom { display: none !important; }
+    body { background: #fff; font-size: 12pt; }
+    .manual-cabeza { background: none; color: var(--tinta); padding: 0 0 1rem; }
+    .manual-cabeza h1, .manual-cabeza .sobre, .manual-cabeza p, .manual-cabeza .version { color: var(--tinta); }
+    .manual-cuerpo { display: block; padding: 0; }
+    .herramienta, .flujo, .panel { break-inside: avoid; box-shadow: none; }
+    .figura button { box-shadow: none; }
+    details { break-inside: avoid; }
+    details:not([open]) p { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <div class="ancho">
+    <a class="marca" href="../"><b>PINO<span>-W</span></b><small>Software de gestión preventiva</small></a>
+    <span class="seccion">Tutoriales</span>
+    <div class="derecha">
+      <span class="quien" id="quien" hidden></span>
+      <button type="button" class="boton claro chico" id="ver-manuales" hidden>Mis manuales</button>
+      <button type="button" class="boton claro chico" id="salir" hidden>Salir</button>
+      <a class="volver" href="../" id="volver">Volver al sitio</a>
+    </div>
+  </div>
+</header>
+
+<main id="principal">
+  <!-- Entrar -->
+  <section class="entrada" id="pantalla-entrar">
+    <div class="ancho">
+      <div>
+        <p class="sobre">Para empresas clientes</p>
+        <h1>Aprende a usar PINO-W, paso a paso</h1>
+        <p class="bajada">Cada persona entra con la misma cuenta del programa y ve el manual de su rol: qué hace, cómo fluye cada documento y cómo se usa cada herramienta, con las pantallas reales.</p>
+        <ul class="puntos">
+          <li>El manual de tu rol, con capturas marcadas</li>
+          <li>El flujo completo: quién te manda qué y a quién se lo mandas tú</li>
+          <li>Se puede imprimir o guardar en PDF</li>
+        </ul>
+      </div>
+      <form class="caja" id="form-entrar" novalidate>
+        <h2>Entra con tu cuenta</h2>
+        <p class="nota">Usa el mismo correo y la misma clave con que entras a PINO-W.</p>
+        <label class="campo"><span>Correo</span><input type="email" name="correo" autocomplete="username" required></label>
+        <label class="campo"><span>Clave</span><input type="password" name="clave" autocomplete="current-password" required></label>
+        <button type="submit" class="boton" id="boton-entrar">Entrar</button>
+        <p class="estado" id="estado-entrar" hidden></p>
+        <p class="letra-chica">Tu clave no se guarda en este navegador. La sesión dura mientras tengas esta pestaña abierta.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Mis manuales -->
+  <section id="pantalla-manuales" hidden>
+    <div class="ancho">
+      <div class="portada-manuales">
+        <p class="sobre">Tus manuales</p>
+        <h1 id="saludo">Hola</h1>
+        <p>Aquí está el manual de tu rol. Si trabajas en más de una empresa con roles distintos, ves uno por cada rol.</p>
+      </div>
+      <div class="lista-manuales" id="lista-manuales"></div>
+      <div class="vacio" id="sin-manuales" hidden></div>
+    </div>
+  </section>
+
+  <!-- El manual -->
+  <section id="pantalla-manual" hidden>
+    <div class="manual-cabeza">
+      <div class="ancho">
+        <p class="sobre" id="m-rol"></p>
+        <h1 id="m-titulo"></h1>
+        <p id="m-bajada"></p>
+        <div class="acciones">
+          <button type="button" class="boton claro chico" id="imprimir">Imprimir o guardar en PDF</button>
+        </div>
+        <p class="version" id="m-version"></p>
+      </div>
+    </div>
+    <div class="ancho manual-cuerpo">
+      <nav class="indice" aria-label="Índice del manual"><b>En este manual</b><ol id="m-indice"></ol></nav>
+      <div id="m-contenido"></div>
+    </div>
+  </section>
+
+  <p class="cargando" id="cargando" hidden>Cargando…</p>
+</main>
+
+<footer>
+  <div class="ancho">
+    <span>© 2026 PINO-W · Software de gestión preventiva para empresas</span>
+    <span>Las capturas usan datos de ejemplo. Las referencias legales son de apoyo: verifica la norma vigente.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  // Desde este computador (pruebas) habla con un servidor de prueba, nunca con el publicado
+  var LOCAL = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+  var SERVIDOR = LOCAL ? (new URLSearchParams(location.search).get("servidor") || "http://127.0.0.1:8013") : "https://pino-w-servidor.onrender.com";
+  var CLAVE = "pinow.tutoriales";          // solo la credencial, y solo en esta pestaña
+  var AVISAR_LENTO = 3500;
+  var ESPERA = 95000;                       // el servidor gratis puede tardar en despertar
+
+  var $ = function (id) { return document.getElementById(id); };
+  var estado = { credencial: "", nombre: "", manuales: [], urls: [] };
+
+  function esc(t) {
+    return String(t == null ? "" : t).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function guardar(c) { try { if (c) { sessionStorage.setItem(CLAVE, c); } else { sessionStorage.removeItem(CLAVE); } } catch (e) { /* nada */ } }
+  function leer() { try { return sessionStorage.getItem(CLAVE) || ""; } catch (e) { return ""; } }
+
+  function pedir(metodo, ruta, cuerpo, comoBlob) {
+    var control = typeof AbortController === "function" ? new AbortController() : null;
+    var reloj = control ? setTimeout(function () { control.abort(); }, ESPERA) : null;
+    var cabeceras = { "Accept": "application/json" };
+    if (cuerpo) { cabeceras["Content-Type"] = "application/json"; }
+    if (estado.credencial) { cabeceras.Authorization = "Bearer " + estado.credencial; }
+    return fetch(SERVIDOR + ruta, { method: metodo, headers: cabeceras, body: cuerpo ? JSON.stringify(cuerpo) : undefined, cache: comoBlob ? "no-cache" : "default", signal: control ? control.signal : undefined })
+      .then(function (r) {
+        if (reloj) { clearTimeout(reloj); }
+        if (comoBlob && r.ok) { return r.blob(); }
+        return r.json().catch(function () { return {}; }).then(function (d) {
+          if (!r.ok) { var e = new Error(d.detail || "No se pudo."); e.status = r.status; throw e; }
+          return d;
+        });
+      }, function (e) {
+        if (reloj) { clearTimeout(reloj); }
+        var x = new Error(e && e.name === "AbortError" ? "El servidor no respondió a tiempo. Intenta de nuevo en un rato." : "No hay conexión con PINO-W. Revisa tu internet.");
+        x.status = 0; throw x;
+      });
+  }
+
+  function mostrar(cual) {
+    ["pantalla-entrar", "pantalla-manuales", "pantalla-manual"].forEach(function (id) { $(id).hidden = id !== cual; });
+    var dentro = cual !== "pantalla-entrar";
+    $("salir").hidden = !dentro;
+    $("quien").hidden = !dentro;
+    $("ver-manuales").hidden = cual !== "pantalla-manual" || estado.manuales.filter(function (m) { return m.listo; }).length < 2;
+    $("cargando").hidden = true;
+    window.scrollTo(0, 0);
+  }
+  function cargando(si) { $("cargando").hidden = !si; if (si) { ["pantalla-entrar", "pantalla-manuales", "pantalla-manual"].forEach(function (id) { $(id).hidden = true; }); } }
+
+  function aviso(texto, tipo) {
+    var p = $("estado-entrar");
+    p.hidden = !texto; p.textContent = texto || ""; p.className = "estado " + (tipo || "info");
+  }
+
+  function vencida() {
+    salir(true);
+    aviso("Tu sesión venció. Vuelve a entrar.", "info");
+  }
+
+  function salir(silencio) {
+    estado.urls.forEach(function (u) { try { URL.revokeObjectURL(u); } catch (e) { /* nada */ } });
+    estado = { credencial: "", nombre: "", manuales: [], urls: [] };
+    guardar("");
+    $("form-entrar").reset();
+    history.replaceState(null, "", location.pathname + location.search);
+    if (!silencio) { aviso("", ""); }
+    mostrar("pantalla-entrar");
+  }
+
+  /* ---------- Entrar ---------- */
+  $("form-entrar").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var f = ev.target, correo = f.correo.value.trim(), clave = f.clave.value;
+    if (!correo || !clave) { aviso("Escribe tu correo y tu clave.", "error"); return; }
+    var boton = $("boton-entrar");
+    boton.disabled = true; boton.textContent = "Entrando…"; aviso("", "");
+    var lento = setTimeout(function () { aviso("Despertando el servidor de PINO-W… la primera vez del día puede tardar hasta un minuto.", "info"); }, AVISAR_LENTO);
+    pedir("POST", "/api/cuentas/ingreso", { correo: correo, clave: clave }).then(function (r) {
+      f.clave.value = "";
+      estado.credencial = r.credencial || "";
+      guardar(estado.credencial);
+      return traerManuales();
+    }).catch(function (e) {
+      aviso(e.message || "No se pudo entrar.", "error");
+    }).then(function () {
+      clearTimeout(lento);
+      boton.disabled = false; boton.textContent = "Entrar";
+    });
+  });
+
+  $("salir").addEventListener("click", function () { salir(false); });
+  $("ver-manuales").addEventListener("click", function () { history.replaceState(null, "", location.pathname + location.search); dibujarManuales(); });
+  $("imprimir").addEventListener("click", function () { window.print(); });
+
+  /* ---------- Mis manuales ---------- */
+  function traerManuales() {
+    return pedir("GET", "/api/tutoriales").then(function (r) {
+      estado.nombre = r.nombre || "";
+      estado.manuales = r.manuales || [];
+      $("quien").textContent = estado.nombre;
+      var listos = estado.manuales.filter(function (m) { return m.listo; });
+      var pedido = (location.hash || "").replace("#", "").split("/")[0];
+      var elegido = listos.filter(function (m) { return m.rol === pedido; })[0] || (listos.length === 1 && estado.manuales.length === 1 ? listos[0] : null);
+      if (elegido) { return abrirManual(elegido.rol); }
+      dibujarManuales(r.pendiente);
+    }).catch(function (e) {
+      if (e.status === 401) { vencida(); return; }
+      salir(true);
+      aviso(e.message || "No se pudieron traer tus manuales.", "error");
+    });
+  }
+
+  function dibujarManuales(pendiente) {
+    var nombre = (estado.nombre || "").split(" ")[0];
+    $("saludo").textContent = nombre ? "Hola, " + nombre : "Hola";
+    var lista = $("lista-manuales"), vacio = $("sin-manuales");
+    lista.innerHTML = estado.manuales.map(function (m) {
+      return m.listo
+        ? '<button type="button" class="tarjeta-manual" data-rol="' + esc(m.rol) + '"><span class="rol">' + esc(m.nombre) + "</span><h2>" + esc(m.titulo) +
+          "</h2><p>" + esc(m.bajada) + '</p><span class="pie">' + (m.herramientas || []).length + " guías · Abrir el manual →</span></button>"
+        : '<div class="tarjeta-manual pronto"><span class="rol">' + esc(m.nombre) + "</span><h2>Manual del " + esc(m.nombre.toLowerCase()) +
+          '</h2><p>Lo estamos escribiendo. Muy pronto vas a encontrarlo aquí.</p><span class="pie">En preparación</span></div>';
+    }).join("");
+    lista.hidden = !estado.manuales.length;
+    vacio.hidden = !!estado.manuales.length;
+    vacio.innerHTML = pendiente
+      ? "<h2>Tu solicitud está pendiente</h2><p>Un administrador de tu empresa tiene que asignarte tu rol. Cuando lo haga, aquí vas a ver el manual de ese rol.</p>"
+      : "<h2>Todavía no tienes un rol en una empresa</h2><p>Los manuales son para las personas de las empresas que usan PINO-W. Entra al programa con el código de tu empresa y pide que te asignen tu rol.</p>";
+    mostrar("pantalla-manuales");
+  }
+
+  $("lista-manuales").addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-rol]");
+    if (b) { abrirManual(b.dataset.rol); }
+  });
+
+  /* ---------- El manual ---------- */
+  function abrirManual(rol) {
+    cargando(true);
+    return pedir("GET", "/api/tutoriales/" + encodeURIComponent(rol)).then(function (r) {
+      dibujarManual(r.rol, r.nombre, r.manual || {});
+      if (location.hash.replace("#", "").split("/")[0] !== rol) { history.replaceState(null, "", location.pathname + location.search + "#" + rol); }
+    }).catch(function (e) {
+      if (e.status === 401) { vencida(); return; }
+      dibujarManuales();
+      alert(e.message || "No se pudo abrir el manual.");
+    });
+  }
+
+  function quienClase(quien, rolNombre) {
+    var q = String(quien || "").toLowerCase();
+    if (q === "pino-w") { return "sistema"; }
+    if (q === String(rolNombre || "").toLowerCase()) { return "yo"; }
+    return "otro";
+  }
+
+  function dibujarManual(rol, rolNombre, m) {
+    $("m-rol").textContent = "Manual de uso · " + rolNombre;
+    $("m-titulo").textContent = m.titulo || "Manual";
+    $("m-bajada").textContent = m.bajada || "";
+    $("m-version").textContent = m.version || "";
+    var indice = [], html = [];
+    var p = m.presentacion || {};
+
+    indice.push('<li><a href="#s-rol">Tu rol</a></li>');
+    html.push('<section class="bloque" id="s-rol"><h2>Tu rol en PINO-W</h2>' +
+      (p.quien ? '<p class="quien-es">' + esc(p.quien) + "</p>" : "") +
+      '<div class="dos-col"><div class="panel si"><h3>Lo que haces</h3><ul>' + (p.haces || []).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") +
+      '</ul></div><div class="panel no"><h3>Lo que no te toca</h3><ul>' + (p.no_haces || []).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") +
+      "</ul></div></div></section>");
+
+    if ((m.flujos || []).length) {
+      indice.push('<li><a href="#s-flujo">Cómo fluye todo</a></li>');
+      html.push('<section class="bloque" id="s-flujo"><h2>Cómo fluye todo</h2><p class="intro">Quién manda qué, a quién, y qué haces tú en cada paso. Tu rol sale en azul.</p>' +
+        m.flujos.map(function (f) {
+          return '<div class="flujo"><h3>' + esc(f.titulo) + '</h3><ol class="cadena">' + (f.pasos || []).map(function (s, i) {
+            return '<li class="eslabon"><span class="num">' + (i + 1) + '</span><span class="chip ' + quienClase(s.quien, rolNombre) + '">' + esc(s.quien) + "</span><p>" + esc(s.que) + "</p></li>";
+          }).join("") + "</ol>" + (f.nota ? '<p class="ley">Base legal de apoyo: ' + esc(f.nota) + "</p>" : "") + "</div>";
+        }).join("") + "</section>");
+    }
+
+    var herr = m.herramientas || [];
+    if (herr.length) {
+      indice.push('<li class="grupo">Paso a paso</li>');
+      herr.forEach(function (h, i) {
+        indice.push('<li><a href="#h-' + esc(h.id) + '">' + esc(h.titulo) + "</a></li>");
+        html.push('<article class="herramienta" id="h-' + esc(h.id) + '"><div class="cab"><span class="n">' + (i + 1) + "</span><div><h3>" + esc(h.titulo) + "</h3>" +
+          (h.donde ? '<span class="donde">Dónde: ' + esc(h.donde) + "</span>" : "") + "</div></div>" +
+          (h.para ? '<p class="para">' + esc(h.para) + "</p>" : "") +
+          (h.pasos || []).map(function (s, k) {
+            var pasos = (h.pasos || []).length;
+            return '<div class="paso"><div class="texto">' + (pasos > 1 ? "<b>Paso " + (k + 1) + "</b>" : "") + "<p>" + esc(s.texto) + "</p></div>" +
+              (s.img ? '<figure class="figura"><button type="button" data-zoom aria-label="Ver la captura en grande"><img alt="Captura: ' + esc(h.titulo) +
+                '" data-img="' + esc(rol + "/" + s.img) + '"></button><figcaption>Haz clic en la imagen para verla en grande. Datos de ejemplo.</figcaption></figure>' : "") +
+              ((s.marcas || []).length ? '<ul class="marcas">' + s.marcas.map(function (x) {
+                return '<li><span class="bola">' + esc(x.n) + "</span><span>" + esc(x.texto) + "</span></li>";
+              }).join("") + "</ul>" : "") + "</div>";
+          }).join("") +
+          ((h.consejos || []).length ? '<div class="consejos"><b>Para tener en cuenta</b><ul>' + h.consejos.map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("") + "</ul></div>" : "") +
+          "</article>");
+      });
+    }
+
+    if ((m.preguntas || []).length) {
+      indice.push('<li><a href="#s-preguntas">Preguntas frecuentes</a></li>');
+      html.push('<section class="bloque" id="s-preguntas"><h2>Preguntas frecuentes</h2>' + m.preguntas.map(function (q) {
+        return "<details><summary>" + esc(q.p) + "</summary><p>" + esc(q.r) + "</p></details>";
+      }).join("") + "</section>");
+    }
+
+    $("m-indice").innerHTML = indice.join("");
+    $("m-contenido").innerHTML = html.join("");
+    mostrar("pantalla-manual");
+    cargarImagenes();
+    vigilarIndice();
+  }
+
+  /* Las capturas se piden con la sesión: sin cuenta no se ven */
+  function cargarImagenes() {
+    var imgs = [].slice.call(document.querySelectorAll("#m-contenido img[data-img]"));
+    var cola = imgs.slice();
+    function siguiente() {
+      var img = cola.shift();
+      if (!img) { return; }
+      var partes = img.dataset.img.split("/");
+      pedir("GET", "/api/tutoriales/" + encodeURIComponent(partes[0]) + "/img/" + encodeURIComponent(partes[1]), null, true).then(function (blob) {
+        var url = URL.createObjectURL(blob);
+        estado.urls.push(url);
+        img.src = url;
+      }).catch(function () { img.alt = "No se pudo cargar esta captura."; }).then(siguiente);
+    }
+    for (var i = 0; i < 3; i++) { siguiente(); }
+  }
+
+  /* Marca en el índice la parte que se está leyendo */
+  var observador = null;
+  function vigilarIndice() {
+    if (observador) { observador.disconnect(); }
+    if (!("IntersectionObserver" in window)) { return; }
+    var enlaces = [].slice.call(document.querySelectorAll("#m-indice a"));
+    observador = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) {
+        if (!e.isIntersecting) { return; }
+        enlaces.forEach(function (a) { a.classList.toggle("activo", a.getAttribute("href") === "#" + e.target.id); });
+      });
+    }, { rootMargin: "-20% 0px -70% 0px" });
+    document.querySelectorAll("#m-contenido .bloque, #m-contenido .herramienta").forEach(function (s) { observador.observe(s); });
+  }
+
+  /* Ir a una parte del manual sin cambiar el enlace del manual */
+  $("m-indice").addEventListener("click", function (ev) {
+    var a = ev.target.closest("a[href^='#']");
+    if (!a) { return; }
+    ev.preventDefault();
+    var destino = document.getElementById(a.getAttribute("href").slice(1));
+    if (destino) { destino.scrollIntoView({ behavior: "smooth", block: "start" }); }
+  });
+
+  /* Zoom de las capturas */
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-zoom]");
+    var z = document.querySelector(".zoom");
+    if (z && ev.target.closest(".zoom")) { z.remove(); return; }
+    if (!b) { return; }
+    var img = b.querySelector("img");
+    if (!img || !img.src) { return; }
+    var capa = document.createElement("div");
+    capa.className = "zoom";
+    capa.innerHTML = '<img alt="' + esc(img.alt) + '" src="' + img.src + '">';
+    document.body.appendChild(capa);
+  });
+  document.addEventListener("keydown", function (ev) {
+    var z = document.querySelector(".zoom");
+    if (z && ev.key === "Escape") { z.remove(); }
+  });
+
+  /* Si la pestaña ya tenía sesión, se sigue */
+  estado.credencial = leer();
+  if (estado.credencial) { cargando(true); traerManuales(); } else { mostrar("pantalla-entrar"); }
+})();
+</script>
+</body>
+</html>
