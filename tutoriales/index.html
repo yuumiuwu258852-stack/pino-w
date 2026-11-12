@@ -112,6 +112,8 @@
   .indice .grupo { margin: 0.8rem 0 0.3rem 0.5rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--suave); }
 
   .bloque { scroll-margin-top: 5.6rem; margin-bottom: 3rem; }
+  .grupo-titulo { margin: 3rem 0 1.2rem; padding-top: 1.5rem; border-top: 2px solid var(--borde); font-size: clamp(1.4rem, 2.4vw, 1.75rem); }
+  #m-contenido > .grupo-titulo:first-of-type { margin-top: 0; }
   .bloque > h2 { font-size: clamp(1.5rem, 2.6vw, 1.9rem); line-height: 1.15; }
   .bloque > p.intro { margin: 0.5rem 0 1.4rem; color: var(--media); max-width: 46rem; }
 
@@ -389,7 +391,18 @@
 
   $("salir").addEventListener("click", function () { salir(false); });
   $("ver-manuales").addEventListener("click", function () { history.replaceState(null, "", location.pathname + location.search); dibujarManuales(); });
-  $("imprimir").addEventListener("click", function () { window.print(); });
+  /* Imprimir: primero se traen todas las capturas */
+  $("imprimir").addEventListener("click", function () {
+    var b = $("imprimir"), imgs = [].slice.call(document.querySelectorAll("#m-contenido img[data-img]"));
+    window.dispatchEvent(new Event("pedir-todas"));
+    b.disabled = true; b.textContent = "Preparando las capturas…";
+    var vueltas = 0, reloj = setInterval(function () {
+      var listas = imgs.filter(function (i) { return i.complete && (i.naturalWidth > 0 || !i.dataset.pedida); }).length;
+      if (listas >= imgs.length || ++vueltas > 60) {
+        clearInterval(reloj); b.disabled = false; b.textContent = "Imprimir o guardar en PDF"; window.print();
+      }
+    }, 500);
+  });
 
   /* ---------- Mis manuales ---------- */
   function traerManuales() {
@@ -480,8 +493,14 @@
 
     var herr = m.herramientas || [];
     if (herr.length) {
-      indice.push('<li class="grupo">Paso a paso</li>');
+      var grupoActual = null;
+      if (!herr[0].grupo) { indice.push('<li class="grupo">Paso a paso</li>'); }
       herr.forEach(function (h, i) {
+        if (h.grupo && h.grupo !== grupoActual) {
+          grupoActual = h.grupo;
+          indice.push('<li class="grupo">' + esc(h.grupo) + "</li>");
+          html.push('<h2 class="grupo-titulo">' + esc(h.grupo) + "</h2>");
+        }
         indice.push('<li><a href="#h-' + esc(h.id) + '">' + esc(h.titulo) + "</a></li>");
         html.push('<article class="herramienta" id="h-' + esc(h.id) + '"><div class="cab"><span class="n">' + (i + 1) + "</span><div><h3>" + esc(h.titulo) + "</h3>" +
           (h.donde ? '<span class="donde">Dónde: ' + esc(h.donde) + "</span>" : "") + "</div></div>" +
@@ -515,20 +534,35 @@
   }
 
   /* Las capturas se piden con la sesión: sin cuenta no se ven */
+  var vigiaImagenes = null;
   function cargarImagenes() {
     var imgs = [].slice.call(document.querySelectorAll("#m-contenido img[data-img]"));
-    var cola = imgs.slice();
+    var cola = [], activos = 0;
+    function pedirla(img) { if (img.dataset.pedida) { return; } img.dataset.pedida = "1"; cola.push(img); for (var i = activos; i < 3; i++) { siguiente(); } }
+    if (vigiaImagenes) { vigiaImagenes.disconnect(); }
+    if ("IntersectionObserver" in window) {
+      vigiaImagenes = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) { if (e.isIntersecting) { vigiaImagenes.unobserve(e.target); pedirla(e.target); } });
+      }, { rootMargin: "900px 0px" });
+      imgs.forEach(function (img) { vigiaImagenes.observe(img); });
+    } else {
+      imgs.forEach(pedirla);
+    }
+    // Para imprimir hacen falta todas
+    window.addEventListener("pedir-todas", function () { imgs.forEach(pedirla); });
+    // Primero las que se ven; después, de a poco, el resto (así nunca queda una sin cargar)
+    setTimeout(function () { imgs.forEach(pedirla); }, 2500);
     function siguiente() {
       var img = cola.shift();
       if (!img) { return; }
+      activos++;
       var partes = img.dataset.img.split("/");
       pedir("GET", "/api/tutoriales/" + encodeURIComponent(partes[0]) + "/img/" + encodeURIComponent(partes[1]), null, true).then(function (blob) {
         var url = URL.createObjectURL(blob);
         estado.urls.push(url);
         img.src = url;
-      }).catch(function () { img.alt = "No se pudo cargar esta captura."; }).then(siguiente);
+      }).catch(function () { img.alt = "No se pudo cargar esta captura."; }).then(function () { activos--; siguiente(); });
     }
-    for (var i = 0; i < 3; i++) { siguiente(); }
   }
 
   /* Marca en el índice la parte que se está leyendo */
