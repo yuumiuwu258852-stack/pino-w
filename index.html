@@ -195,6 +195,33 @@
   .cz-correo-botones { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; margin-top: 1rem; }
   .cz-copiado { margin-top: 0.8rem !important; color: var(--verde) !important; }
   .cz-progreso[hidden] { display: none; }
+  /* Precios (12-11-2026): se muestran solo cuando el servidor dice que la venta está abierta */
+  .pr-tres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; align-items: stretch; margin-top: 0.6rem; }
+  .pr-plan { position: relative; display: flex; flex-direction: column; padding: 2rem 1.7rem; border: 1px solid var(--borde); border-radius: 20px; background: #fff; }
+  .pr-plan.dest { border: 2px solid var(--azul); box-shadow: 0 24px 50px rgba(14, 40, 80, 0.14); transform: translateY(-10px); }
+  .pr-cinta { position: absolute; top: -0.85rem; left: 50%; transform: translateX(-50%); padding: 0.25rem 0.9rem; border-radius: 999px; background: var(--azul); color: #fff; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+  .pr-plan h3 { font-size: 1.25rem; }
+  .pr-para { margin: 0.2rem 0 1.2rem; color: var(--media); font-size: 0.93rem; }
+  .pr-precio { font-family: "Archivo", sans-serif; font-weight: 800; font-size: 2.3rem; line-height: 1; color: var(--azul-hondo); }
+  .pr-precio small { font-family: "IBM Plex Sans", sans-serif; font-size: 0.95rem; font-weight: 500; color: var(--suave); }
+  .pr-iva { margin: 0.4rem 0 1.4rem; font-size: 0.82rem; color: var(--suave); }
+  .pr-check { list-style: none; margin: 0 0 1.6rem; padding: 0; display: grid; gap: 0.55rem; }
+  .pr-check li { position: relative; padding-left: 1.7rem; font-size: 0.95rem; color: var(--media); }
+  .pr-check li::before { content: "✓"; position: absolute; left: 0; top: 0.05rem; display: grid; place-items: center; width: 1.2rem; height: 1.2rem; border-radius: 50%; background: #e5f5ec; color: var(--verde); font-size: 0.75rem; font-weight: 700; }
+  .pr-plan .boton { margin-top: auto; justify-content: center; }
+  .pr-corpo { display: flex; align-items: center; gap: 1.5rem; margin-top: 1.6rem; padding: 1.3rem 1.6rem; border: 1px dashed #b9cdf0; border-radius: 16px; background: var(--azul-claro); }
+  .pr-corpo div { flex: 1; }
+  .pr-corpo h3 { font-size: 1.08rem; }
+  .pr-corpo p { margin: 0.2rem 0 0; font-size: 0.93rem; color: var(--media); }
+  .pr-seguro { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem 1.4rem; margin-top: 1.4rem; font-size: 0.88rem; color: var(--suave); }
+  .pr-fondo { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 1rem; background: rgba(12, 28, 56, 0.5); overflow-y: auto; }
+  .pr-fondo[hidden] { display: none; }
+  .pr-caja { width: min(560px, 100%); max-height: calc(100vh - 2rem); overflow-y: auto; padding: 1.8rem; border-radius: 20px; background: #fff; box-shadow: 0 30px 70px rgba(10, 25, 50, 0.35); }
+  .pr-caja h3 { font-size: 1.35rem; }
+  .pr-resumen { margin: 0.6rem 0 1.2rem; padding: 0.8rem 1rem; border-radius: 12px; background: var(--azul-claro); color: var(--azul-hondo); font-size: 0.93rem; }
+  .pr-caja .cz-rejilla { margin-bottom: 0.4rem; }
+  .pr-pie { display: flex; gap: 0.8rem; justify-content: flex-end; margin-top: 1.2rem; }
+  @media (max-width: 860px) { .pr-tres { grid-template-columns: minmax(0, 1fr); } .pr-plan.dest { transform: none; } .pr-corpo { flex-direction: column; align-items: flex-start; } }
   @media (max-width: 600px) { .cz-correo-botones .boton { width: 100%; justify-content: center; text-align: center; } }
   .cz-directo { margin-top: 1.2rem; text-align: center; font-size: 0.92rem; color: var(--media); }
   @media (max-width: 600px) { .cz-rejilla { grid-template-columns: minmax(0, 1fr); } .cz-tarjeta { padding: 1.3rem; } .cz-progreso div { font-size: 0.75rem; } }
@@ -245,10 +272,11 @@
       <a href="#roles">Roles</a>
       <a href="#mineria">Minería</a>
       <a href="#datos">Tus datos</a>
+      <a href="#precios" data-solo-venta hidden>Precios</a>
       <a href="#contacto">Contacto</a>
     </nav>
     <a class="boton claro" href="tutoriales/">Iniciar sesión</a>
-    <a class="boton" href="#contacto">Cotizar</a>
+    <a class="boton" href="#contacto" data-venta-href="#precios" data-venta-texto="Ver planes">Cotizar</a>
   </div>
 </header>
 
@@ -264,10 +292,10 @@
       lo que hoy vive repartido entre planillas, fotos del celular y el cuaderno de terreno, con trazabilidad desde el hallazgo hasta su cierre.
     </p>
     <div class="acciones">
-      <a class="boton" href="#contacto">Cotiza para tu empresa</a>
+      <a class="boton" href="#contacto" data-venta-href="#precios" data-venta-texto="Ver planes y precios">Cotiza para tu empresa</a>
       <a class="boton claro" href="#que-hace">Ver qué incluye</a>
     </div>
-    <p class="dato">PINO-W se contrata por empresa: te lo cotizamos y lo dejamos activo para tu equipo.</p>
+    <p class="dato" data-venta-texto="Planes mensuales por empresa, todo incluido. Pagas con Webpay o tarjeta y cancelas cuando quieras.">PINO-W se contrata por empresa: te lo cotizamos y lo dejamos activo para tu equipo.</p>
     </div>
     <div class="tele">
         <video src="video/pino-w.mp4" poster="video/pino-w-portada.jpg" controls playsinline preload="metadata" width="1920" height="1080"
@@ -424,6 +452,36 @@
   </div>
 </section>
 
+<section class="bloque" id="precios" data-pagina="precios" data-solo-venta hidden>
+  <div class="ancho">
+    <div class="titulo titulo-centro">
+      <p class="sobre">Precios</p>
+      <h2>Un plan según el tamaño de tu empresa</h2>
+      <p>Todo PINO-W incluido en cada plan. Se cobra solo cada mes y lo cancelas cuando quieras.</p>
+    </div>
+    <div class="pr-tres" id="pr-planes"></div>
+    <div class="pr-corpo"><div><h3>¿Más de 500 trabajadores o un contrato especial?</h3><p>Armamos un plan a la medida de tu empresa.</p></div><a class="boton claro" href="#contacto">Cotiza con nosotros</a></div>
+    <div class="pr-seguro"><span>Pagas con Webpay o tarjeta a través de Mercado Pago</span><span>·</span><span>Tus datos de pago nunca pasan por PINO-W</span><span>·</span><span>Sin permanencia</span></div>
+  </div>
+</section>
+
+<div class="pr-fondo" id="pr-fondo" hidden>
+  <form class="pr-caja" id="pr-form" novalidate role="dialog" aria-modal="true" aria-labelledby="pr-titulo">
+    <h3 id="pr-titulo">Contrata PINO-W</h3>
+    <p class="pr-resumen" id="pr-resumen"></p>
+    <div class="cz-rejilla">
+      <label class="cz-campo cz-ancho"><span>Razón social *</span><input name="razon_social" maxlength="160" autocomplete="organization" placeholder="Constructora del Norte SpA"></label>
+      <label class="cz-campo"><span>RUT de la empresa *</span><input name="rut" maxlength="14" placeholder="76.543.210-K"></label>
+      <label class="cz-campo"><span>Tu nombre *</span><input name="nombre" maxlength="120" autocomplete="name" placeholder="Nombre y apellido"></label>
+      <label class="cz-campo cz-ancho"><span>Tu correo *</span><input name="correo" type="email" maxlength="160" autocomplete="email" placeholder="nombre@empresa.cl"></label>
+      <label class="cz-campo cz-ancho"><span>Elige una clave para entrar a PINO-W * <i>(si ya tienes cuenta, tu clave de siempre)</i></span><input name="clave" type="password" maxlength="200" autocomplete="new-password"></label>
+      <label class="cz-acepto cz-ancho"><input type="checkbox" name="acepto"><span>Acepto los Términos y condiciones y la Política de privacidad de PINO-W, y que el plan se cobre automáticamente cada mes hasta que lo cancele.</span></label>
+    </div>
+    <p class="cz-error" id="pr-error" hidden></p>
+    <div class="pr-pie"><button type="button" class="boton claro" id="pr-cerrar">Volver</button><button type="submit" class="boton" id="pr-pagar">Ir a pagar</button></div>
+  </form>
+</div>
+
 <section class="bloque" id="contacto" data-pagina="contacto">
   <div class="ancho cz">
     <div class="titulo titulo-centro">
@@ -500,9 +558,11 @@
 <script>
   /* Se ve solo la sección elegida arriba; el enlace (#roles, #descargar…) se puede compartir */
   (function () {
-    var paginas = Array.prototype.slice.call(document.querySelectorAll("[data-pagina]"));
-    var enlaces = Array.prototype.slice.call(document.querySelectorAll(".barra nav a"));
+    var paginas, enlaces;
     function mostrar() {
+      // Se buscan cada vez: la sección de Precios aparece o se va según el servidor
+      paginas = Array.prototype.slice.call(document.querySelectorAll("[data-pagina]"));
+      enlaces = Array.prototype.slice.call(document.querySelectorAll(".barra nav a"));
       var id = (location.hash || "#inicio").slice(1);
       if (!paginas.some(function (p) { return p.dataset.pagina === id; })) { id = "inicio"; }
       paginas.forEach(function (p) { p.hidden = p.dataset.pagina !== id; });
@@ -514,7 +574,116 @@
     }
     window.addEventListener("hashchange", mostrar);
     window.addEventListener("load", mostrar);
+    window.addEventListener("secciones-cambiaron", mostrar);
     mostrar();
+  })();
+</script>
+<script>
+  /* Precios (12-11-2026): el servidor dice los planes y si la venta está abierta. Cerrada (o sin conexión),
+     la sección y el enlace se quitan y todo queda como antes, con «Cotiza». El pago es en Mercado Pago. */
+  (function () {
+    var LOCAL = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+    var SERVIDOR = LOCAL ? "http://127.0.0.1:8013" : "https://pino-w-servidor.onrender.com";
+    var $ = function (id) { return document.getElementById(id); };
+    var plata = function (n) { return "$" + Number(n).toLocaleString("es-CL"); };
+    var EXTRAS = {
+      pequena: ["Programa para el computador", "App para terreno en el celular", "Cada persona con su cuenta y su rol", "Firmas electrónicas verificables"],
+      mediana: ["Todo lo del plan Pequeña", "Sesión de puesta en marcha", "Ayuda por correo", "Varias faenas y contratistas"],
+      grande: ["Todo lo del plan Mediana", "Capacitación para tu equipo", "Ayuda prioritaria", "Varios administradores"]
+    };
+    var elegido = null, enviando = false, venta = false;
+    // Modo vitrina (12-11-2026, Karen): mientras no se abre la venta, se muestran estos precios y
+    // «Quiero este plan» lleva al formulario de contacto. Deben coincidir con ajustes.PLANES del servidor.
+    var IVA = 0.19;
+    var PLANES_BASE = [["pequena", "Pequeña", "Hasta 25 trabajadores", 89990], ["mediana", "Mediana", "26 a 100 trabajadores", 199990],
+      ["grande", "Grande", "101 a 500 trabajadores", 449990]].map(function (x) {
+        return { clave: x[0], nombre: x[1], para: x[2], neto: x[3], total: Math.round(x[3] * (1 + IVA)) }; });
+    var TAMANO = { pequena: "hasta25", mediana: "26a100", grande: "101a500" };
+    function quitar() {
+      [].forEach.call(document.querySelectorAll("[data-solo-venta]"), function (x) { x.remove(); });
+      var f = $("pr-fondo"); if (f) { f.remove(); }
+      if (location.hash === "#precios") { location.hash = "#contacto"; }
+      window.dispatchEvent(new Event("secciones-cambiaron"));
+    }
+    function abrir(plan) {
+      elegido = plan;
+      $("pr-resumen").innerHTML = "Plan <b>" + plan.nombre + "</b> (" + plan.para.toLowerCase() + "): <b>" + plata(plan.total) +
+        " al mes</b> con IVA incluido (" + plata(plan.neto) + " + IVA). Pagas en Mercado Pago y se cobra solo cada mes.";
+      $("pr-error").hidden = true; $("pr-fondo").hidden = false;
+      setTimeout(function () { $("pr-form").elements.razon_social.focus(); }, 0);
+    }
+    function cerrar() { $("pr-fondo").hidden = true; $("pr-form").elements.clave.value = ""; }
+    function mostrarPlanes(planes) {
+      $("pr-planes").innerHTML = planes.map(function (p) {
+        var dest = p.clave === "mediana";
+        return '<div class="pr-plan' + (dest ? " dest" : "") + '">' + (dest ? '<span class="pr-cinta">El más elegido</span>' : "") +
+          "<h3>" + p.nombre + '</h3><p class="pr-para">' + p.para + "</p>" +
+          '<div class="pr-precio">' + plata(p.neto) + " <small>/ mes</small></div>" +
+          '<p class="pr-iva">+ IVA · ' + plata(p.total) + " con IVA · cobro mensual automático</p>" +
+          '<ul class="pr-check">' + (EXTRAS[p.clave] || []).map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul>" +
+          '<button type="button" class="boton' + (dest ? "" : " claro") + '" data-plan="' + p.clave + '">' + (venta ? "Suscribirme" : "Quiero este plan") + "</button></div>";
+      }).join("");
+      [].forEach.call($("pr-planes").querySelectorAll("[data-plan]"), function (b) {
+        b.addEventListener("click", function () {
+          var plan = planes.filter(function (p) { return p.clave === b.dataset.plan; })[0];
+          if (venta) { abrir(plan); return; }
+          // Vitrina: al formulario de contacto, con el tamaño marcado y el plan anotado
+          var f = $("cz-form");
+          if (f) {
+            var r = f.querySelector('input[name="trabajadores"][value="' + TAMANO[plan.clave] + '"]'); if (r) { r.checked = true; }
+            var m = f.elements.mensaje; if (m && !m.value) { m.value = "Me interesa el plan " + plan.nombre + " (" + plata(plan.neto) + " + IVA al mes)."; }
+          }
+          location.hash = "#contacto";
+        });
+      });
+    }
+    function abrirVenta(planes, abierta) {
+      venta = !!abierta;
+      var seg = document.querySelector(".pr-seguro");
+      if (seg && !seg.dataset.original) { seg.dataset.original = seg.innerHTML; }
+      if (seg && venta) { seg.innerHTML = seg.dataset.original; }
+      if (!venta) {
+        if (seg) { seg.innerHTML = "<span>Muy pronto podrás contratar y pagar en línea con Webpay o tarjeta</span><span>·</span><span>Por ahora, déjanos tus datos y te lo dejamos activo</span><span>·</span><span>Sin permanencia</span>"; }
+      }
+      [].forEach.call(document.querySelectorAll("[data-solo-venta]"), function (x) { x.hidden = false; });
+      [].forEach.call(document.querySelectorAll("[data-venta-texto]"), function (x) { x.textContent = x.dataset.ventaTexto; });
+      [].forEach.call(document.querySelectorAll("[data-venta-href]"), function (x) { x.setAttribute("href", x.dataset.ventaHref); });
+      mostrarPlanes(planes);
+      window.dispatchEvent(new Event("secciones-cambiaron"));
+    }
+    abrirVenta(PLANES_BASE, false);          // se ven al tiro; si el servidor dice que la venta está abierta, se cambia
+    var control = window.AbortController ? new AbortController() : null;
+    var corte = setTimeout(function () { if (control) { control.abort(); } }, 60000);
+    fetch(SERVIDOR + "/api/planes", control ? { signal: control.signal, cache: "no-store" } : { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { clearTimeout(corte); if (d && d.venta && d.planes && d.planes.length) { abrirVenta(d.planes, true); } })
+      .catch(function () { clearTimeout(corte); });
+
+    var f = $("pr-form"); if (!f) { return; }
+    $("pr-cerrar").addEventListener("click", cerrar);
+    $("pr-fondo").addEventListener("click", function (ev) { if (ev.target === $("pr-fondo")) { cerrar(); } });
+    document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && !$("pr-fondo").hidden) { cerrar(); } });
+    function error(t) { var p = $("pr-error"); p.hidden = !t; p.textContent = t || ""; }
+    f.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      if (enviando || !elegido) { return; }
+      var v = function (n) { return String(f.elements[n].value || "").trim(); };
+      if (v("razon_social").length < 2) { return error("Escribe la razón social de tu empresa."); }
+      if (v("rut").length < 3) { return error("Escribe el RUT de tu empresa: con él emitimos tu boleta o factura."); }
+      if (v("nombre").length < 3) { return error("Escribe tu nombre y apellido."); }
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(v("correo"))) { return error("Revisa tu correo."); }
+      if (f.elements.clave.value.length < 8) { return error("La clave debe tener al menos 8 caracteres."); }
+      if (!f.elements.acepto.checked) { return error("Para seguir tienes que aceptar los Términos y la Política de privacidad."); }
+      enviando = true; error(""); $("pr-pagar").disabled = true; $("pr-pagar").textContent = "Preparando el pago…";
+      fetch(SERVIDOR + "/api/planes/comprar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
+        plan: elegido.clave, razon_social: v("razon_social"), rut: v("rut"), nombre: v("nombre"), correo: v("correo"),
+        clave: f.elements.clave.value, acepto: true }) })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) {
+          if (!r.ok || !d.url) { throw new Error(typeof d.detail === "string" ? d.detail : "No pudimos preparar el pago."); } return d; }); })
+        .then(function (d) { f.elements.clave.value = ""; location.href = d.url; })
+        .catch(function (e) { error((e && e.message && e.message !== "Failed to fetch" ? e.message : "No pudimos conectarnos.") + " Si sigue, escríbenos a pinow.contacto@gmail.com."); })
+        .then(function () { enviando = false; $("pr-pagar").disabled = false; $("pr-pagar").textContent = "Ir a pagar"; });
+    });
   })();
 </script>
 <script>
