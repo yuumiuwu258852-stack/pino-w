@@ -50,10 +50,11 @@
   .acciones { display: flex; flex-wrap: wrap; gap: 0.8rem; }
   .dato { margin: 1rem 0 0; font-size: 0.86rem; color: var(--suave); }
 
-  /* Captura */
-  .captura { margin-top: -2.2rem; position: relative; z-index: 2; }
-  .captura img { border: 1px solid var(--borde); border-radius: 14px; box-shadow: 0 28px 60px rgba(14, 40, 80, 0.18); }
-  .captura video { display: block; width: 100%; height: auto; background: #fff; border: 1px solid var(--borde); border-radius: 14px; box-shadow: 0 28px 60px rgba(14, 40, 80, 0.18); }
+  /* El video, al lado del título */
+  .portada .ancho.con-tele { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 3rem; align-items: center; }
+  .tele { position: relative; }
+  .tele::before { content: ""; position: absolute; inset: 8% -4% -6% 6%; border-radius: 28px; background: radial-gradient(closest-side, rgba(15, 102, 208, 0.22), transparent); filter: blur(10px); }
+  .tele video { position: relative; display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border: 6px solid #fff; border-radius: 18px; background: #fff; box-shadow: 0 30px 60px rgba(14, 40, 80, 0.22); }
 
   /* Secciones */
   section.bloque { padding: 5rem 0 1rem; }
@@ -218,13 +219,14 @@
     .roles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .dos, .dos.reves { grid-template-columns: minmax(0, 1fr); }
     .portada::before { background: rgba(247, 251, 254, 0.9); }
+    .portada .ancho.con-tele { grid-template-columns: minmax(0, 1fr); gap: 2.5rem; }
+    .tele { width: min(100%, 620px); }
   }
   @media (max-width: 600px) {
     body { font-size: 16px; }
     .ancho { width: calc(100% - 2rem); }
     .rejilla { grid-template-columns: minmax(0, 1fr); }
     .portada .ancho { padding: 3.5rem 0 3.5rem; }
-    .captura { margin-top: 0; }
     .marca small { display: none; }
     .barra .ancho { gap: 0.4rem 0.6rem; }
     .barra .boton { padding: 0.45rem 0.75rem; font-size: 0.85rem; }
@@ -253,7 +255,8 @@
 <main>
 <div data-pagina="inicio">
 <section class="portada">
-  <div class="ancho">
+  <div class="ancho con-tele">
+    <div>
     <p class="sobre">Gestión preventiva en terreno</p>
     <h1>La prevención de tu empresa, en un solo lugar</h1>
     <p class="bajada">
@@ -265,13 +268,14 @@
       <a class="boton claro" href="#que-hace">Ver qué incluye</a>
     </div>
     <p class="dato">PINO-W se contrata por empresa: te lo cotizamos y lo dejamos activo para tu equipo.</p>
+    </div>
+    <div class="tele">
+        <video src="video/pino-w.mp4" poster="video/pino-w-portada.jpg" controls playsinline preload="metadata" width="1920" height="1080"
+          aria-label="Video de presentación de PINO-W, 30 segundos: un turno en la faena, del papel a la Bandeja, las firmas con QR y el contacto para cotizar"></video>
+    </div>
   </div>
 </section>
 
-<div class="ancho captura">
-  <video src="video/pino-w.mp4" poster="video/pino-w-portada.jpg" controls playsinline preload="metadata" width="1920" height="1080"
-    aria-label="Video de presentación de PINO-W, 30 segundos: un turno en la faena, del papel a la Bandeja, las firmas con QR y el contacto para cotizar"></video>
-</div>
 </div>
 
 <section class="bloque" id="que-hace" data-pagina="que-hace">
