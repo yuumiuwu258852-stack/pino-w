@@ -102,6 +102,94 @@
   .caja-descarga dt { color: var(--suave); }
   .caja-descarga dd { margin: 0; color: var(--tinta); }
 
+  /* «Qué hace»: el ciclo en 5 pasos (12-11-2026, Karen eligió el diseño 1) */
+  .titulo-centro { margin-left: auto; margin-right: auto; text-align: center; }
+  .ciclo { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; }
+  .ciclo::before { content: ""; position: absolute; left: 10%; right: 10%; top: 1.6rem; height: 2px; background: linear-gradient(90deg, var(--azul), #7bb942); }
+  .ciclo-paso { position: relative; padding: 0 0.9rem; text-align: center; }
+  .ciclo-num { position: relative; display: grid; place-items: center; width: 3.2rem; height: 3.2rem; margin: 0 auto 1rem; border-radius: 50%;
+    background: #fff; border: 2px solid var(--azul); font-family: "Archivo", sans-serif; font-weight: 800; color: var(--azul); }
+  .ciclo-paso:last-child .ciclo-num { border-color: #7bb942; color: #4f8a1f; }
+  .ciclo-paso h3 { font-size: 1.15rem; }
+  .ciclo-paso p { margin: 0.4rem 0 0.8rem; font-size: 0.93rem; color: var(--media); }
+  .ciclo-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.35rem; }
+  .ciclo-tags span { padding: 0.15rem 0.6rem; border: 1px solid var(--borde); border-radius: 999px; background: #fff; font-size: 0.78rem; color: var(--tinta); }
+  @media (max-width: 960px) {
+    .ciclo { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; max-width: 30rem; margin: 0 auto; }
+    .ciclo::before { display: none; }
+    .ciclo-paso:not(:last-child)::after { content: ""; position: absolute; left: calc(1.6rem - 1px); top: 3.2rem; bottom: -1.6rem; width: 2px; background: #b9cdf0; }
+    .ciclo-paso { display: grid; grid-template-columns: 3.2rem 1fr; column-gap: 1rem; padding: 0; text-align: left; }
+    .ciclo-num { grid-row: span 3; margin: 0; }
+    .ciclo-paso p { margin: 0.2rem 0 0.5rem; }
+    .ciclo-tags { justify-content: flex-start; }
+  }
+  /* «Roles»: elige un rol */
+  .rol-selector { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .rol-boton { padding: 0.55rem 1rem; border: 1px solid var(--borde); border-radius: 999px; background: #fff; font: inherit; font-size: 0.93rem; font-weight: 600; color: var(--media); cursor: pointer; }
+  .rol-boton:hover { border-color: #b9cdf0; color: var(--azul-hondo); }
+  .rol-boton.activo { border-color: var(--azul); background: var(--azul); color: #fff; }
+  .rol-ficha { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 60rem; margin: 0 auto; padding: 2rem; border: 1px solid var(--borde); border-radius: 20px; background: #fff; box-shadow: 0 18px 40px rgba(14, 40, 80, 0.08); }
+  .rol-texto h3 { font-size: 1.6rem; }
+  .rol-bajada { margin: 0.5rem 0 1.2rem; color: var(--media); }
+  .rol-texto ul { display: grid; gap: 0.55rem; margin: 0; padding: 0; list-style: none; }
+  .rol-texto li { position: relative; padding-left: 1.7rem; }
+  .rol-texto li::before { content: "✓"; position: absolute; left: 0.2rem; color: var(--verde); font-weight: 700; }
+  .rol-lado { align-self: start; padding: 1.4rem; border-radius: 14px; background: var(--fondo); }
+  .rol-lado b { display: block; margin-bottom: 0.4rem; font-family: "Archivo", sans-serif; color: var(--azul-hondo); }
+  .rol-lado p { margin: 0; font-size: 0.95rem; color: var(--media); }
+  @media (max-width: 760px) { .rol-ficha { grid-template-columns: minmax(0, 1fr); padding: 1.4rem; } .rol-boton { font-size: 0.86rem; padding: 0.45rem 0.8rem; } }
+  /* «Tus datos»: escudo al centro (12-11-2026, diseño 1) */
+  .cuidado { display: grid; grid-template-columns: 1fr 15rem 1fr; gap: 2rem; align-items: center; }
+  .cuidado-col { display: grid; gap: 1.6rem; }
+  .cuidado-izq { text-align: right; }
+  .cuidado h3 { font-size: 1.05rem; }
+  .cuidado p { margin: 0.25rem 0 0; font-size: 0.92rem; color: var(--media); }
+  .cuidado-centro { display: grid; place-items: center; }
+  .cuidado-centro div { display: grid; place-items: center; width: 13rem; height: 13rem; border-radius: 50%; color: var(--azul);
+    background: radial-gradient(circle, #fff 55%, var(--azul-claro) 56%); box-shadow: 0 20px 50px rgba(14, 40, 80, 0.12); }
+  @media (max-width: 960px) {
+    .cuidado { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; max-width: 30rem; margin: 0 auto; }
+    .cuidado-izq { text-align: left; }
+    .cuidado-centro { order: -1; }
+    .cuidado-centro div { width: 8rem; height: 8rem; }
+    .cuidado-centro svg { width: 60px; height: 60px; }
+  }
+  /* «Contacto»: cotización en 3 pasos (12-11-2026, diseño 2; se guarda en el servidor y la ve la CEO) */
+  .cz { max-width: 48rem; }
+  .cz-progreso { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1.2rem; }
+  .cz-progreso div { text-align: center; font-size: 0.85rem; font-weight: 600; color: var(--suave); }
+  .cz-progreso div::before { content: ""; display: block; height: 5px; margin-bottom: 0.5rem; border-radius: 99px; background: var(--borde); }
+  .cz-progreso div.ya { color: var(--azul-hondo); }
+  .cz-progreso div.ya::before { background: var(--azul); }
+  .cz-tarjeta { padding: 2rem; border: 1px solid var(--borde); border-radius: 20px; background: #fff; box-shadow: 0 20px 44px rgba(14, 40, 80, 0.1); }
+  .cz-tarjeta fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+  .cz-tarjeta legend { margin-bottom: 1.1rem; padding: 0; font-family: "Archivo", sans-serif; font-size: 1.35rem; font-weight: 700; color: var(--azul-hondo); }
+  .cz-rejilla { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .cz-ancho { grid-column: 1 / -1; }
+  .cz-campo { display: block; }
+  .cz-campo > span { display: block; margin-bottom: 0.35rem; font-size: 0.86rem; font-weight: 600; color: var(--tinta); }
+  .cz-campo i { font-style: normal; font-weight: 400; color: var(--suave); }
+  .cz-campo input, .cz-campo select, .cz-campo textarea { width: 100%; padding: 0.7rem 0.85rem; border: 1px solid var(--borde); border-radius: 10px; background: var(--fondo); font: inherit; font-size: 0.97rem; color: var(--tinta); }
+  .cz-campo input:focus, .cz-campo select:focus, .cz-campo textarea:focus { outline: 2px solid var(--azul); outline-offset: 1px; background: #fff; }
+  .cz-ops { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .cz-op { position: relative; }
+  .cz-op input { position: absolute; opacity: 0; pointer-events: none; }
+  .cz-op span { display: inline-block; padding: 0.5rem 0.95rem; border: 1px solid var(--borde); border-radius: 999px; background: #fff; font-size: 0.92rem; white-space: nowrap; cursor: pointer; }
+  .cz-op input:checked + span { border-color: var(--azul); background: var(--azul-claro); color: var(--azul-hondo); font-weight: 600; }
+  .cz-op input:focus-visible + span { outline: 2px solid var(--azul); outline-offset: 2px; }
+  .cz-acepto { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.9rem; color: var(--media); }
+  .cz-acepto input { margin-top: 0.25rem; }
+  .cz-trampa { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .cz-error { margin: 1rem 0 0; padding: 0.75rem 0.9rem; border-radius: 10px; background: #fbe9e7; color: #8a1f17; font-size: 0.92rem; }
+  .cz-error.info { background: var(--azul-claro); color: var(--azul-hondo); }
+  .cz-pie { display: flex; align-items: center; gap: 1rem; margin-top: 1.4rem; }
+  .cz-pie span { margin-right: auto; font-size: 0.88rem; color: var(--suave); }
+  .cz-listo { text-align: center; }
+  .cz-check { display: grid; place-items: center; width: 4rem; height: 4rem; margin: 0 auto 1rem; border-radius: 50%; background: #e5f5ec; color: var(--verde); font-size: 2rem; font-weight: 700; }
+  .cz-listo h3 { font-size: 1.5rem; }
+  .cz-listo p { margin: 0.5rem 0 0; color: var(--media); }
+  .cz-directo { margin-top: 1.2rem; text-align: center; font-size: 0.92rem; color: var(--media); }
+  @media (max-width: 600px) { .cz-rejilla { grid-template-columns: minmax(0, 1fr); } .cz-tarjeta { padding: 1.3rem; } .cz-progreso div { font-size: 0.75rem; } }
   /* Cada sección se ve sola, al apretarla en el menú de arriba (07-11-2026, pedido de Karen) */
   [data-pagina][hidden] { display: none !important; }
   main { min-height: calc(100vh - 4.2rem - 7rem); }
@@ -181,42 +269,22 @@
 
 <section class="bloque" id="que-hace" data-pagina="que-hace">
   <div class="ancho">
-    <div class="titulo">
-      <h2>Todo el ciclo preventivo, de la matriz a la mejora</h2>
-      <p>Las mismas herramientas que usa un prevencionista en terreno, ordenadas como trabaja: identificar y evaluar, controlar, capacitar, investigar y mejorar.</p>
+    <div class="titulo titulo-centro">
+      <h2>Todo el ciclo preventivo, en 5 pasos</h2>
+      <p>Ordenado como trabaja un prevencionista en terreno.</p>
     </div>
-    <div class="rejilla">
-      <article class="tarjeta">
-        <span class="icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4.5 4.5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-15.5a1 1 0 0 1 1-1z"/><path d="M14 3.5V8h4.5M9 13h6M9 16.5h6"/></svg></span>
-        <h3>Documentos</h3>
-        <ul><li>AST y permisos de trabajo</li><li>IPER en terreno y la MIPER en Excel</li><li>Procedimientos (PTS) que se arman desde la matriz</li><li>Reglamento Interno, Política de SST y mapas de riesgos</li><li>Gestión documental con versiones y vencimientos</li></ul>
-      </article>
-      <article class="tarjeta">
-        <span class="icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4.5" width="14" height="16" rx="2"/><path d="M9 4.5V3.2h6v1.3M9 12.5l2 2 4-4.2"/></svg></span>
-        <h3>Trabajo en terreno</h3>
-        <ul><li>Inspecciones con hallazgos, responsable y plazo</li><li>Checklists de equipos, también mineros</li><li>Gestión de EPP: entregas firmadas y reposición</li><li>Control de visitas: quién está dentro de la faena</li></ul>
-      </article>
-      <article class="tarjeta">
-        <span class="icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-4.5L21 9l-9 4.5z"/><path d="M7 11v4.5c1.5 1.5 3 2 5 2s3.5-.5 5-2V11"/></svg></span>
-        <h3>Capacitación</h3>
-        <ul><li>Obligación de informar (ODI)</li><li>Charlas con asistencia</li><li>Programa de capacitaciones y su registro</li></ul>
-      </article>
-      <article class="tarjeta">
-        <span class="icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.4h.01"/></svg></span>
-        <h3>Accidentes y emergencias</h3>
-        <ul><li>Aviso de accidente y de riesgo grave</li><li>Análisis de causas e informes</li><li>Plan de emergencia y simulacros</li></ul>
-      </article>
-      <article class="tarjeta">
-        <span class="icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5v17M5 7.5h14M7 7.5l-3 6a3.5 3.5 0 0 0 6 0zM17 7.5l-3 6a3.5 3.5 0 0 0 6 0z"/></svg></span>
-        <h3>Cumplimiento legal</h3>
-        <ul><li>Comité Paritario, fiscalizaciones y auditorías</li><li>Contratistas y sus documentos</li><li>Sustancias peligrosas y protocolos MINSAL</li><li>Ley Karin, con reserva</li></ul>
-      </article>
-      <article class="tarjeta">
-        <span class="icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5h16"/><path d="M6.5 16V11M11 16V7M15.5 16v-6M20 16V5"/></svg></span>
-        <h3>Gestión del sistema</h3>
-        <ul><li>Diagnóstico y programa de trabajo</li><li>Carta Gantt e indicadores</li><li>Mejora continua y lecciones aprendidas</li><li>Informes en PDF con el logo de tu empresa</li></ul>
-      </article>
-    </div>
+    <ol class="ciclo">
+      <li class="ciclo-paso"><span class="ciclo-num">1</span><h3>Identificar</h3><p>Los peligros de cada tarea y su nivel de riesgo.</p>
+        <div class="ciclo-tags"><span>IPER</span><span>MIPER</span><span>Mapas de riesgos</span></div></li>
+      <li class="ciclo-paso"><span class="ciclo-num">2</span><h3>Controlar</h3><p>Antes y durante el trabajo, en terreno.</p>
+        <div class="ciclo-tags"><span>AST</span><span>Permisos</span><span>Inspecciones</span><span>EPP</span></div></li>
+      <li class="ciclo-paso"><span class="ciclo-num">3</span><h3>Capacitar</h3><p>Que cada persona sepa y quede firmado.</p>
+        <div class="ciclo-tags"><span>ODI</span><span>Charlas</span><span>Cursos</span></div></li>
+      <li class="ciclo-paso"><span class="ciclo-num">4</span><h3>Investigar</h3><p>Cada accidente, hasta su causa raíz.</p>
+        <div class="ciclo-tags"><span>Avisos</span><span>Causas</span><span>Emergencias</span></div></li>
+      <li class="ciclo-paso"><span class="ciclo-num">5</span><h3>Mejorar</h3><p>Cumplir la ley y medir que funciona.</p>
+        <div class="ciclo-tags"><span>Programa</span><span>Indicadores</span><span>Comité</span></div></li>
+    </ol>
   </div>
 </section>
 
@@ -241,23 +309,32 @@
 
 <section class="bloque" id="roles" data-pagina="roles">
   <div class="ancho">
-    <div class="titulo">
+    <div class="titulo titulo-centro">
       <h2>Cada persona ve lo suyo</h2>
-      <p>La empresa entra con un código y los administradores le dan a cada persona su rol. Con ese rol, cada uno ve sus herramientas y nada más.</p>
+      <p>Los administradores le dan a cada persona su rol. Elige uno para ver qué hace en PINO-W.</p>
     </div>
-    <div class="roles">
-      <div class="rol"><b>Administradores</b><span>Dirigen la empresa: dan los roles, crean los proyectos y reciben lo que la ley les manda.</span></div>
-      <div class="rol"><b>Jefe de prevención</b><span>Lleva el sistema completo y difunde la matriz, los mapas y los procedimientos.</span></div>
-      <div class="rol"><b>Prevencionista</b><span>Asesora y usa todas las herramientas del sistema.</span></div>
-      <div class="rol"><b>Jefe de área</b><span>Aprueba los procedimientos de su área y controla en terreno.</span></div>
-      <div class="rol"><b>Jefe de turno</b><span>Entrega y recibe el turno, con su libro de novedades.</span></div>
-      <div class="rol"><b>Supervisor</b><span>Manda el AST a su cuadrilla, da la charla, inspecciona y autoriza permisos.</span></div>
-      <div class="rol"><b>Comité Paritario</b><span>Inspecciona, investiga y manda sus acuerdos a la empresa.</span></div>
-      <div class="rol"><b>Brigadista</b><span>Conoce el plan de emergencia y sabe quién está dentro de la faena.</span></div>
-      <div class="rol"><b>Operador</b><span>Revisa su equipo antes de usarlo y ve su autorización vigente.</span></div>
-      <div class="rol"><b>Trabajador</b><span>Ve su jornada, rellena su AST y firma desde su cuenta lo que recibe.</span></div>
+    <div class="rol-selector" role="group" aria-label="Roles"><button type="button" class="rol-boton" data-rol="0" aria-pressed="false">Administradores</button><button type="button" class="rol-boton" data-rol="1" aria-pressed="false">Jefe de prevención</button><button type="button" class="rol-boton" data-rol="2" aria-pressed="false">Prevencionista</button><button type="button" class="rol-boton" data-rol="3" aria-pressed="false">Jefe de área</button><button type="button" class="rol-boton" data-rol="4" aria-pressed="false">Jefe de turno</button><button type="button" class="rol-boton activo" data-rol="5" aria-pressed="true">Supervisor</button><button type="button" class="rol-boton" data-rol="6" aria-pressed="false">Comité Paritario</button><button type="button" class="rol-boton" data-rol="7" aria-pressed="false">Brigadista</button><button type="button" class="rol-boton" data-rol="8" aria-pressed="false">Operador</button><button type="button" class="rol-boton" data-rol="9" aria-pressed="false">Trabajador</button></div>
+    <div class="rol-ficha">
+      <div class="rol-texto" id="rol-texto" aria-live="polite"><h3>Supervisor</h3><p class="rol-bajada">Está en terreno con la cuadrilla.</p><ul><li>Prepara con su gente el trabajo seguro</li><li>Autoriza los trabajos de riesgo</li><li>Responde los reportes de su cuadrilla</li></ul></div>
+      <div class="rol-lado">
+        <b>Con su propia cuenta</b>
+        <p>Cada persona entra con su cuenta, ve solo lo de su rol y firma con su clave. Lo que no le toca, no le aparece.</p>
+      </div>
     </div>
   </div>
+  <script>
+    /* Roles: se ve uno a la vez (12-11-2026, Karen eligió el diseño 2, sin mostrar herramientas) */
+    (function () {
+      var ROLES = [["Administradores", "Dirigen la empresa dentro de PINO-W.", ["Dan a cada persona su rol", "Aprueban y firman lo que les manda prevención", "Responden ante los avisos urgentes"]], ["Jefe de prevención", "Dirige el Departamento de Prevención.", ["Lleva el sistema preventivo completo", "Revisa lo que se hace en terreno", "Informa cada mes a la empresa"]], ["Prevencionista", "Asesora a la empresa en terreno.", ["Revisa y da el visto bueno", "Investiga los accidentes", "Registra y mantiene todo al día"]], ["Jefe de área", "Responde por la seguridad de su área.", ["Aprueba los procedimientos de su área", "Cierra las tareas con evidencia", "Controla en terreno"]], ["Jefe de turno", "Manda en terreno durante su turno.", ["Entrega y recibe el turno firmado", "Controla el inicio de cada turno", "Detiene el trabajo si hay riesgo"]], ["Supervisor", "Está en terreno con la cuadrilla.", ["Prepara con su gente el trabajo seguro", "Autoriza los trabajos de riesgo", "Responde los reportes de su cuadrilla"]], ["Comité Paritario", "Vigila e investiga, junto a la empresa.", ["Registra sus sesiones y acuerdos", "Investiga los accidentes", "Manda sus acuerdos a la empresa"]], ["Brigadista", "Es parte de la brigada de emergencia.", ["Conoce el plan y su rol", "Participa en los simulacros", "Sabe quién está dentro de la faena"]], ["Operador", "Conduce u opera equipos.", ["Revisa su equipo antes de usarlo", "Avisa las fallas al tiro", "Mantiene su autorización al día"]], ["Trabajador", "Lo suyo, en su cuenta.", ["Ve su jornada", "Firma lo que recibe desde su cuenta", "Avisa peligros y accidentes"]]];
+      var botones = [].slice.call(document.querySelectorAll(".rol-boton"));
+      function mostrarRol(k) {
+        var r = ROLES[k];
+        document.getElementById("rol-texto").innerHTML = "<h3>" + r[0] + '</h3><p class="rol-bajada">' + r[1] + "</p><ul>" + r[2].map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul>";
+        botones.forEach(function (b) { var si = Number(b.dataset.rol) === k; b.classList.toggle("activo", si); b.setAttribute("aria-pressed", si ? "true" : "false"); });
+      }
+      botones.forEach(function (b) { b.addEventListener("click", function () { mostrarRol(Number(b.dataset.rol)); }); });
+    })();
+  </script>
 </section>
 
 <section class="mineria" id="mineria" data-pagina="mineria">
@@ -279,17 +356,22 @@
 
 <section class="bloque datos" id="datos" data-pagina="datos">
   <div class="ancho">
-    <div class="titulo">
+    <div class="titulo titulo-centro">
       <h2>Tus datos, cuidados</h2>
-      <p>PINO-W se diseñó para que cada dato esté solo donde tiene que estar.</p>
+      <p>Cada dato está solo donde tiene que estar.</p>
     </div>
-    <div class="rejilla">
-      <article class="tarjeta"><h3>Lo de tus módulos, en tu computador</h3><p>La matriz, las inspecciones y los demás registros se guardan en tu equipo. Nada sube solo: sube lo que tú envías.</p></article>
-      <article class="tarjeta"><h3>Datos de salud, al mínimo</h3><p>De los exámenes se guarda solo la vigencia, nunca el resultado. Los avisos de dolencias los ve solo prevención.</p></article>
-      <article class="tarjeta"><h3>Ley Karin, con reserva</h3><p>Una denuncia la ven solo quien la hace y quienes deben atenderla. No se reenvía ni se manda con copia.</p></article>
-      <article class="tarjeta"><h3>Firmas con constancia</h3><p>Quien firma escribe su clave: queda su RUT, la hora, una huella del documento y un código para verificarlo.</p></article>
-      <article class="tarjeta"><h3>Correos sin contenido</h3><p>Los avisos por correo solo dicen que hay algo nuevo. El detalle se ve dentro del programa.</p></article>
-      <article class="tarjeta"><h3>Cada rol, lo suyo</h3><p>Cada persona ve solo lo que le corresponde a su rol, y lo que se manda de persona a persona lo ven solo ellas.</p></article>
+    <div class="cuidado">
+      <div class="cuidado-col cuidado-izq">
+        <div><h3>En tu computador</h3><p>Tus registros se guardan en tu equipo. Sube solo lo que tú envías.</p></div>
+        <div><h3>Salud, al mínimo</h3><p>Nunca resultados de exámenes, solo su vigencia.</p></div>
+        <div><h3>Ley Karin, con reserva</h3><p>La ven solo quienes deben atenderla.</p></div>
+      </div>
+      <div class="cuidado-centro" aria-hidden="true"><div><svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/><path d="M8.6 12l2.4 2.4 4.6-4.8" stroke-width="1.8"/></svg></div></div>
+      <div class="cuidado-col">
+        <div><h3>Firmas verificables</h3><p>Cada firma queda con un código para comprobarla.</p></div>
+        <div><h3>Correos sin contenido</h3><p>Solo avisan que hay algo nuevo.</p></div>
+        <div><h3>Cada uno, lo suyo</h3><p>Cada persona ve solo lo de su rol.</p></div>
+      </div>
     </div>
   </div>
 </section>
@@ -332,13 +414,56 @@
 </section>
 
 <section class="bloque" id="contacto" data-pagina="contacto">
-  <div class="ancho dos reves">
-    <img src="img/iper.jpg" alt="Pantalla de levantamientos IPER con filtros por riesgo y por proceso" width="1600" height="900" loading="lazy">
-    <div class="titulo">
-      <h2>¿Lo quieres para tu empresa?</h2>
-      <p>Escríbenos para cotizar PINO-W para tu empresa. Después te ayudamos a ponerlo en marcha con tu equipo: la empresa, los roles, los proyectos y la matriz.</p>
-      <p><a class="boton claro" href="mailto:pinow.contacto@gmail.com">pinow.contacto@gmail.com</a></p>
+  <div class="ancho cz">
+    <div class="titulo titulo-centro">
+      <p class="sobre">Cotiza para tu empresa</p>
+      <h2>Pide tu cotización en 3 pasos</h2>
+      <p>Te tomará dos minutos. Te respondemos al correo que nos dejes.</p>
     </div>
+    <div class="cz-progreso" aria-hidden="true"><div class="ya" data-cz-barra="1">1 · Tu empresa</div><div data-cz-barra="2">2 · Lo que necesitas</div><div data-cz-barra="3">3 · Contacto</div></div>
+    <form class="cz-tarjeta" id="cz-form" novalidate>
+      <fieldset data-cz-paso="1">
+        <legend>Cuéntanos de tu empresa</legend>
+        <div class="cz-rejilla">
+          <label class="cz-campo cz-ancho"><span>Razón social *</span><input name="razon_social" maxlength="160" placeholder="Constructora del Norte SpA" autocomplete="organization"></label>
+          <label class="cz-campo"><span>RUT de la empresa</span><input name="rut" maxlength="14" placeholder="76.543.210-K"></label>
+          <label class="cz-campo"><span>Región</span><select name="region"><option value="">Elige…</option><option>Arica y Parinacota</option><option>Tarapacá</option><option>Antofagasta</option><option>Atacama</option><option>Coquimbo</option><option>Valparaíso</option><option>Metropolitana</option><option>O’Higgins</option><option>Maule</option><option>Ñuble</option><option>Biobío</option><option>La Araucanía</option><option>Los Ríos</option><option>Los Lagos</option><option>Aysén</option><option>Magallanes</option></select></label>
+          <div class="cz-campo cz-ancho"><span>Rubro *</span><div class="cz-ops"><label class="cz-op"><input type="radio" name="rubro" value="mineria"><span>Minería</span></label><label class="cz-op"><input type="radio" name="rubro" value="construccion"><span>Construcción</span></label><label class="cz-op"><input type="radio" name="rubro" value="industria"><span>Industria</span></label><label class="cz-op"><input type="radio" name="rubro" value="servicios"><span>Servicios</span></label><label class="cz-op"><input type="radio" name="rubro" value="otro"><span>Otro</span></label></div></div>
+          <div class="cz-campo cz-ancho"><span>Cantidad de trabajadores *</span><div class="cz-ops"><label class="cz-op"><input type="radio" name="trabajadores" value="hasta25"><span>Hasta 25</span></label><label class="cz-op"><input type="radio" name="trabajadores" value="26a100"><span>26 a 100</span></label><label class="cz-op"><input type="radio" name="trabajadores" value="101a500"><span>101 a 500</span></label><label class="cz-op"><input type="radio" name="trabajadores" value="mas500"><span>Más de 500</span></label></div></div>
+        </div>
+      </fieldset>
+      <fieldset data-cz-paso="2" hidden>
+        <legend>¿Qué necesitas?</legend>
+        <div class="cz-rejilla">
+          <div class="cz-campo cz-ancho"><span>Te interesa <i>(puedes marcar varias)</i></span><div class="cz-ops"><label class="cz-op"><input type="checkbox" name="intereses" value="programa"><span>Programa para el computador</span></label><label class="cz-op"><input type="checkbox" name="intereses" value="celular"><span>App para terreno</span></label><label class="cz-op"><input type="checkbox" name="intereses" value="contratistas"><span>Manejo de contratistas</span></label><label class="cz-op"><input type="checkbox" name="intereses" value="mineria"><span>Faena minera</span></label><label class="cz-op"><input type="checkbox" name="intereses" value="capacitacion"><span>Ayuda para empezar</span></label></div></div>
+          <label class="cz-campo"><span>Faenas u obras <i>(aprox.)</i></span><input name="faenas" maxlength="20" inputmode="numeric" placeholder="2"></label>
+          <label class="cz-campo cz-ancho"><span>¿Algo que debamos saber? <i>(opcional)</i></span><textarea name="mensaje" maxlength="2000" rows="3" placeholder="Por ejemplo: tenemos contratistas, trabajamos en turnos 7x7…"></textarea></label>
+        </div>
+      </fieldset>
+      <fieldset data-cz-paso="3" hidden>
+        <legend>¿A quién le respondemos?</legend>
+        <div class="cz-rejilla">
+          <label class="cz-campo"><span>Nombre *</span><input name="nombre" maxlength="120" placeholder="Nombre y apellido" autocomplete="name"></label>
+          <label class="cz-campo"><span>Cargo</span><input name="cargo" maxlength="120" placeholder="Jefe de prevención" autocomplete="organization-title"></label>
+          <label class="cz-campo"><span>Correo *</span><input name="correo" type="email" maxlength="160" placeholder="nombre@empresa.cl" autocomplete="email"></label>
+          <label class="cz-campo"><span>Teléfono</span><input name="telefono" type="tel" maxlength="30" placeholder="+56 9 1234 5678" autocomplete="tel"></label>
+          <label class="cz-trampa" aria-hidden="true">No llenar<input name="sitio" tabindex="-1" autocomplete="off"></label>
+          <label class="cz-acepto cz-ancho"><input type="checkbox" name="acepto"><span>Acepto que PINO-W use estos datos solo para responder mi cotización.</span></label>
+        </div>
+      </fieldset>
+      <p class="cz-error" id="cz-error" hidden></p>
+      <div class="cz-pie">
+        <button type="button" class="boton claro" id="cz-atras" hidden>← Atrás</button>
+        <span id="cz-cuenta">Paso 1 de 3</span>
+        <button type="button" class="boton" id="cz-sigue">Siguiente →</button>
+      </div>
+    </form>
+    <div class="cz-tarjeta cz-listo" id="cz-listo" hidden>
+      <div class="cz-check" aria-hidden="true">✓</div>
+      <h3>¡Recibimos tu solicitud!</h3>
+      <p>Te escribiremos a <b id="cz-a"></b> con tu cotización.</p>
+    </div>
+    <p class="cz-directo">¿Prefieres escribirnos directo? <a href="mailto:pinow.contacto@gmail.com">pinow.contacto@gmail.com</a></p>
   </div>
 </section>
 
@@ -369,6 +494,58 @@
     window.addEventListener("hashchange", mostrar);
     window.addEventListener("load", mostrar);
     mostrar();
+  })();
+</script>
+<script>
+  /* Cotización: 3 pasos y se manda al servidor de PINO-W (rutas_cotizaciones.py). Desde este computador va a un servidor de prueba. */
+  (function () {
+    var LOCAL = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+    var SERVIDOR = LOCAL ? "http://127.0.0.1:8013" : "https://pino-w-servidor.onrender.com";
+    var f = document.getElementById("cz-form"); if (!f) { return; }
+    var paso = 1, enviando = false;
+    var $ = function (id) { return document.getElementById(id); };
+    function error(texto, info) { var p = $("cz-error"); p.hidden = !texto; p.textContent = texto || ""; p.className = "cz-error" + (info ? " info" : ""); }
+    function valor(n) { var e = f.elements[n]; return e ? String(e.value || "").trim() : ""; }
+    function marcado(n) { var e = f.querySelector('input[name="' + n + '"]:checked'); return e ? e.value : ""; }
+    function mostrar(n) {
+      paso = n;
+      [].forEach.call(f.querySelectorAll("[data-cz-paso]"), function (fs) { fs.hidden = Number(fs.dataset.czPaso) !== n; });
+      [].forEach.call(document.querySelectorAll("[data-cz-barra]"), function (b) { b.classList.toggle("ya", Number(b.dataset.czBarra) <= n); });
+      $("cz-atras").hidden = n === 1;
+      $("cz-cuenta").textContent = "Paso " + n + " de 3";
+      $("cz-sigue").textContent = n === 3 ? "Pedir cotización" : "Siguiente →";
+      error("");
+    }
+    function revisa() {
+      if (paso === 1) {
+        if (valor("razon_social").length < 2) { return "Escribe la razón social de tu empresa."; }
+        if (!marcado("rubro")) { return "Elige el rubro de tu empresa."; }
+        if (!marcado("trabajadores")) { return "Elige cuántas personas trabajan en tu empresa."; }
+      }
+      if (paso === 3) {
+        if (valor("nombre").length < 2) { return "Escribe tu nombre."; }
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(valor("correo"))) { return "Revisa tu correo: lo necesitamos para responderte."; }
+        if (!f.elements.acepto.checked) { return "Para responderte necesitamos que aceptes el uso de tus datos."; }
+      }
+      return "";
+    }
+    $("cz-atras").addEventListener("click", function () { mostrar(Math.max(1, paso - 1)); });
+    $("cz-sigue").addEventListener("click", function () {
+      var falta = revisa(); if (falta) { error(falta); return; }
+      if (paso < 3) { mostrar(paso + 1); return; }
+      if (enviando) { return; }
+      enviando = true; error(""); $("cz-sigue").disabled = true; $("cz-sigue").textContent = "Enviando…";
+      var lento = setTimeout(function () { error("Conectando con PINO-W… la primera vez puede tardar hasta un minuto.", true); }, 3500);
+      var datos = { razon_social: valor("razon_social"), rut: valor("rut"), region: valor("region"), rubro: marcado("rubro"),
+        trabajadores: marcado("trabajadores"), intereses: [].map.call(f.querySelectorAll('input[name="intereses"]:checked'), function (x) { return x.value; }),
+        faenas: valor("faenas"), mensaje: valor("mensaje"), nombre: valor("nombre"), cargo: valor("cargo"), correo: valor("correo"),
+        telefono: valor("telefono"), acepto: f.elements.acepto.checked, sitio: valor("sitio") };
+      fetch(SERVIDOR + "/api/cotizaciones", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(datos) })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) { throw new Error(typeof d.detail === "string" ? d.detail : "No se pudo enviar."); } return d; }); })
+        .then(function () { $("cz-a").textContent = datos.correo; f.hidden = true; document.querySelector(".cz-progreso").hidden = true; $("cz-listo").hidden = false; })
+        .catch(function (e) { error((e && e.message && e.message !== "Failed to fetch" ? e.message : "No pudimos enviarla ahora.") + " Si sigue, escríbenos a pinow.contacto@gmail.com."); })
+        .then(function () { clearTimeout(lento); enviando = false; $("cz-sigue").disabled = false; if (!f.hidden) { $("cz-sigue").textContent = "Pedir cotización"; } });
+    });
   })();
 </script>
 </body>
