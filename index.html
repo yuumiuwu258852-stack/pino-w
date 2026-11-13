@@ -188,6 +188,13 @@
   .cz-check { display: grid; place-items: center; width: 4rem; height: 4rem; margin: 0 auto 1rem; border-radius: 50%; background: #e5f5ec; color: var(--verde); font-size: 2rem; font-weight: 700; }
   .cz-listo h3 { font-size: 1.5rem; }
   .cz-listo p { margin: 0.5rem 0 0; color: var(--media); }
+  .cz-check.aviso { background: var(--azul-claro); color: var(--azul); }
+  .cz-correo { margin-top: 1.6rem; padding-top: 1.4rem; border-top: 1px solid var(--borde); }
+  .cz-correo p { margin: 0; font-size: 0.95rem; }
+  .cz-correo-botones { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; margin-top: 1rem; }
+  .cz-copiado { margin-top: 0.8rem !important; color: var(--verde) !important; }
+  .cz-progreso[hidden] { display: none; }
+  @media (max-width: 600px) { .cz-correo-botones .boton { width: 100%; justify-content: center; text-align: center; } }
   .cz-directo { margin-top: 1.2rem; text-align: center; font-size: 0.92rem; color: var(--media); }
   @media (max-width: 600px) { .cz-rejilla { grid-template-columns: minmax(0, 1fr); } .cz-tarjeta { padding: 1.3rem; } .cz-progreso div { font-size: 0.75rem; } }
   /* Cada sección se ve sola, al apretarla en el menú de arriba (07-11-2026, pedido de Karen) */
@@ -459,9 +466,19 @@
       </div>
     </form>
     <div class="cz-tarjeta cz-listo" id="cz-listo" hidden>
-      <div class="cz-check" aria-hidden="true">✓</div>
-      <h3>¡Recibimos tu solicitud!</h3>
-      <p>Te escribiremos a <b id="cz-a"></b> con tu cotización.</p>
+      <div class="cz-check" id="cz-icono" aria-hidden="true">✓</div>
+      <h3 id="cz-titulo">¡Recibimos tu solicitud!</h3>
+      <p id="cz-bajada">Te escribiremos a <b id="cz-a"></b> con tu cotización.</p>
+      <div class="cz-correo">
+        <p id="cz-pide"><b>Para responderte más rápido, mándanosla también por correo.</b><br>Ya va escrita: solo aprieta «Enviar».</p>
+        <div class="cz-correo-botones">
+          <a class="boton" id="cz-gmail" target="_blank" rel="noopener">Abrir en Gmail</a>
+          <a class="boton claro" id="cz-outlook" target="_blank" rel="noopener">Abrir en Outlook</a>
+          <a class="boton claro" id="cz-app">Otra app de correo</a>
+          <button type="button" class="boton claro" id="cz-copiar">Copiar texto</button>
+        </div>
+        <p class="cz-copiado" id="cz-copiado" hidden>Copiado. Pégalo en un correo para <b>pinow.contacto@gmail.com</b>.</p>
+      </div>
     </div>
     <p class="cz-directo">¿Prefieres escribirnos directo? <a href="mailto:pinow.contacto@gmail.com">pinow.contacto@gmail.com</a></p>
   </div>
@@ -529,6 +546,43 @@
       }
       return "";
     }
+    /* El correo ya escrito para pinow.contacto@gmail.com: la persona solo aprieta «Enviar» en su correo */
+    var BUZON = "pinow.contacto@gmail.com";
+    function etiqueta(n, v) { var e = f.querySelector('input[name="' + n + '"][value="' + v + '"]'); return e && e.nextElementSibling ? e.nextElementSibling.textContent : v; }
+    function textoCorreo(d) {
+      var l = ["Hola PINO-W, quiero cotizar para mi empresa.", "", "EMPRESA",
+        "Razón social: " + d.razon_social, "RUT: " + (d.rut || "—"), "Región: " + (d.region || "—"),
+        "Rubro: " + etiqueta("rubro", d.rubro), "Trabajadores: " + etiqueta("trabajadores", d.trabajadores),
+        "Faenas u obras: " + (d.faenas || "—"), "", "LO QUE NECESITAMOS",
+        "Nos interesa: " + (d.intereses.length ? d.intereses.map(function (i) { return etiqueta("intereses", i); }).join(", ") : "—")];
+      if (d.mensaje) { l.push("Comentario: " + d.mensaje); }
+      l.push("", "CONTACTO", "Nombre: " + d.nombre, "Cargo: " + (d.cargo || "—"), "Correo: " + d.correo, "Teléfono: " + (d.telefono || "—"));
+      return l.join("\n");
+    }
+    function listo(d, guardada) {
+      var asunto = "Cotización PINO-W — " + d.razon_social, cuerpo = textoCorreo(d), q = encodeURIComponent;
+      $("cz-gmail").href = "https://mail.google.com/mail/?view=cm&fs=1&to=" + q(BUZON) + "&su=" + q(asunto) + "&body=" + q(cuerpo);
+      $("cz-outlook").href = "https://outlook.office.com/mail/deeplink/compose?to=" + q(BUZON) + "&subject=" + q(asunto) + "&body=" + q(cuerpo);
+      $("cz-app").href = "mailto:" + BUZON + "?subject=" + q(asunto) + "&body=" + q(cuerpo.replace(/\n/g, "\r\n"));
+      $("cz-copiar").onclick = function () {
+        var todo = "Para: " + BUZON + "\nAsunto: " + asunto + "\n\n" + cuerpo;
+        var hecho = function () { $("cz-copiado").hidden = false; };
+        if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(todo).then(hecho, function () { copiaVieja(todo); hecho(); }); }
+        else { copiaVieja(todo); hecho(); }
+      };
+      $("cz-icono").textContent = guardada ? "✓" : "✉";
+      $("cz-icono").className = "cz-check" + (guardada ? "" : " aviso");
+      $("cz-titulo").textContent = guardada ? "¡Recibimos tu solicitud!" : "Mándanosla por correo";
+      if (guardada) { $("cz-bajada").innerHTML = "Te escribiremos a <b id=\"cz-a\"></b> con tu cotización."; $("cz-a").textContent = d.correo; }
+      else { $("cz-bajada").textContent = "No pudimos conectarnos ahora, pero tu solicitud ya está escrita: elige tu correo y apreta «Enviar»."; }
+      $("cz-pide").innerHTML = guardada ? "<b>Para responderte más rápido, mándanosla también por correo.</b><br>Ya va escrita: solo aprieta «Enviar»." : "Va dirigida a <b>" + BUZON + "</b>.";
+      f.hidden = true; document.querySelector(".cz-progreso").hidden = true; $("cz-listo").hidden = false;
+      $("cz-listo").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    function copiaVieja(t) {
+      var a = document.createElement("textarea"); a.value = t; a.setAttribute("readonly", ""); a.style.position = "fixed"; a.style.opacity = "0";
+      document.body.appendChild(a); a.select(); try { document.execCommand("copy"); } catch (e) { /* sin copiar */ } a.remove();
+    }
     $("cz-atras").addEventListener("click", function () { mostrar(Math.max(1, paso - 1)); });
     $("cz-sigue").addEventListener("click", function () {
       var falta = revisa(); if (falta) { error(falta); return; }
@@ -542,8 +596,13 @@
         telefono: valor("telefono"), acepto: f.elements.acepto.checked, sitio: valor("sitio") };
       fetch(SERVIDOR + "/api/cotizaciones", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(datos) })
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) { throw new Error(typeof d.detail === "string" ? d.detail : "No se pudo enviar."); } return d; }); })
-        .then(function () { $("cz-a").textContent = datos.correo; f.hidden = true; document.querySelector(".cz-progreso").hidden = true; $("cz-listo").hidden = false; })
-        .catch(function (e) { error((e && e.message && e.message !== "Failed to fetch" ? e.message : "No pudimos enviarla ahora.") + " Si sigue, escríbenos a pinow.contacto@gmail.com."); })
+        .then(function () { listo(datos, true); })
+        .catch(function (e) {
+          // Si el servidor respondió con algo que corregir (RUT, correo…), se corrige en el formulario
+          if (e && e.message && e.message !== "Failed to fetch" && e.message !== "No se pudo enviar.") { error(e.message); return; }
+          // Si no hubo conexión, igual puede mandarla por correo, ya escrita
+          listo(datos, false);
+        })
         .then(function () { clearTimeout(lento); enviando = false; $("cz-sigue").disabled = false; if (!f.hidden) { $("cz-sigue").textContent = "Pedir cotización"; } });
     });
   })();
